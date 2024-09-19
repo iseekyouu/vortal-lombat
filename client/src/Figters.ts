@@ -1,4 +1,4 @@
-import Figter from './Figter'
+import Fighter from './Fighter'
 
 const fightersRaw = [{
   avatar: 'https://www.serebii.net/pokemongo/pokemon/001.png',
@@ -27,5 +27,7 @@ const fightersRaw = [{
 ];
 
 export default fightersRaw.map((fighter, index) =>
-    new Figter(index, fighter.name, fighter.avatar)
+    new Fighter(index, fighter.name, fighter.avatar)
 );
+
+export { Fighter };

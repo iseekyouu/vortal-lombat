@@ -1,4 +1,4 @@
-class Figter {
+class Fighter {
   public id: number;
   public name: string;
   public avatar: string;
@@ -30,4 +30,4 @@ class Figter {
   }
 }
 
-export default Figter;
+export default Fighter;
