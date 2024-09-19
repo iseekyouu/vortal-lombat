@@ -1,5 +1,5 @@
 import React from 'react';
-import fighters from './Figters';
+import fighters from './Fighters';
 
 interface GridItemProps {
   id: number;
