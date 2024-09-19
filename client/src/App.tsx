@@ -32,10 +32,12 @@ function App() {
   const renderPlayers = () => <Players
     chooseFighter={chooseFighter}
     hideFighters={hideFighters}
-    setPlayer2={setPlayer2}
+    chooseFighter2={setPlayer2}
   />
 
   const renderComponent = () => {
+    console.log({ selectedFighter, player2, currentScreen });
+
     if (selectedFighter === null || player2 === null) {
       return renderPlayers();
     }
