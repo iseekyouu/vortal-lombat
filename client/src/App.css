@@ -41,7 +41,6 @@ html, body {
   margin: 0; /* Remove any default margin */
   padding: 0; /* Remove any default padding */
   overflow-x: hidden; /* Hide horizontal overflow */
-  overflow-y: hidden; /* Hide vertical overflow (if needed) */
   width: 100%; /* Ensure width is 100% of viewport */
   height: 100%; /* Ensure height is 100% of viewport */
 }
