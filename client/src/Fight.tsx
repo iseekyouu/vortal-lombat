@@ -107,8 +107,18 @@ const CombatLog: React.FC<{ rounds: ResponseFight[]; isLoading: boolean }> = ({ 
 };
 
 const FinishHimButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // Focus the button when it becomes available (i.e., when fightFinished is true)
+  useEffect(() => {
+    if (buttonRef.current) {
+      buttonRef.current.focus();
+    }
+  }, []);
+
   return (
     <button
+      ref={buttonRef}
       onClick={onClick}
       className="text-6xl font-bold text-yellow-400 uppercase border-4 border-red-600 bg-black px-8 py-4 mt-8
         hover:bg-red-600 hover:text-white hover:border-yellow-400 shadow-lg animate-pulse transition-all duration-300"
