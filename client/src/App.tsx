@@ -5,6 +5,7 @@ import Fighter from './Fighter';
 import Fight from "./Fight";
 import Fighters from './Fighters';
 import VersusScreen from './VersusScreen';
+import WinnerScreen from './WinnerScreen';
 
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
@@ -29,7 +30,7 @@ const SCREENS = {
 function App() {
   const [selectedFighter, setSelectedFighter] = React.useState<Fighter | null>(Fighters[0]);
   const [hideFighters, setHideFighters] = React.useState(false);
-  const [currentScreen, setCurrentScreen] = React.useState(SCREENS.PLAYERS);
+  const [currentScreen, setCurrentScreen] = React.useState(SCREENS.WIN);
   const [player2, setPlayer2] = React.useState<Fighter>(Fighters[1]);
 
 
@@ -63,7 +64,7 @@ function App() {
           />
         );
         case SCREENS.WIN:
-          return <h1>WIN</h1>
+          return <WinnerScreen winner={selectedFighter} />;
       default:
         return renderPlayers();
     }
