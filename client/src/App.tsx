@@ -7,32 +7,16 @@ import Fighters from './Fighters';
 import VersusScreen from './VersusScreen';
 import WinnerScreen from './WinnerScreen';
 import MainTheme from './audio/main_theme.m4a';
+import AudioPlayer from './AudioPlayer';
+import StartScreen from './StartScreen';
 
-const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const audioRef = React.useRef<HTMLAudioElement>(null);
-  const [isPlaying, setIsPlaying] = React.useState(false);
-
-  const handlePlay = () => {
-    if (audioRef.current) {
-      audioRef.current.play();
-      setIsPlaying(!isPlaying);
-    }
-  };
-
+const MainLayout: React.FC<{ children: React.ReactNode, muted?: boolean }> = ({ children, muted }) => {
   return (
     <div className="App">
       <header className="App-header">
-        <p>VORTAL LOMBAT 0.0.1</p>
-        <audio ref={audioRef} src={MainTheme} autoPlay loop />
-
-      {/* Mute/Unmute Button */}
-      <button
-        onClick={handlePlay}
-        className="mt-4 px-6 py-3 bg-red-600 text-white font-bold text-xl rounded-lg hover:bg-red-800"
-      >
-        {isPlaying ? 'Mute' : 'Unmute'}
-      </button>
-
+        <p>
+          <AudioPlayer audioSrc={MainTheme} playOnStart={!muted} />
+        </p>
         <div className="h-screen w-full">
         {children}
         </div>
@@ -42,6 +26,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 };
 
 const SCREENS = {
+  START: 4,
   PLAYERS: 0,
   FIGHT: 1,
   VERSUS: 2,
@@ -51,11 +36,10 @@ const SCREENS = {
 function App() {
   const [selectedFighter, setSelectedFighter] = React.useState<Fighter | null>(Fighters[0]);
   const [hideFighters, setHideFighters] = React.useState(false);
-  const [currentScreen, setCurrentScreen] = React.useState(SCREENS.PLAYERS);
+  const [currentScreen, setCurrentScreen] = React.useState(SCREENS.START);
   const [player2, setPlayer2] = React.useState<Fighter>(Fighters[1]);
   const [winner, setWinner] = React.useState<Fighter>(Fighters[0]);
-
-
+  const [muted, setMuted] = React.useState(false);
 
   function chooseFighter(fighter: Fighter) {
     setSelectedFighter(fighter);
@@ -72,6 +56,7 @@ function App() {
     chooseFighter={chooseFighter}
     hideFighters={hideFighters}
     chooseFighter2={setPlayer2}
+    muted={muted}
   />
 
   const renderComponent = () => {
@@ -80,6 +65,13 @@ function App() {
     }
 
     switch (currentScreen) {
+      case SCREENS.START:
+        return <StartScreen onStart={(muted: boolean = false) => {
+          setCurrentScreen(SCREENS.PLAYERS)
+          if (muted) {
+            setMuted(true);
+          }
+        }}/>
       case SCREENS.PLAYERS:
         return renderPlayers();
       case SCREENS.VERSUS:
@@ -94,12 +86,17 @@ function App() {
         );
         case SCREENS.WIN:
           return <WinnerScreen winner={winner} />;
+
       default:
         return renderPlayers();
     }
   };
 
-  return <MainLayout> {renderComponent()}</MainLayout>
+  if (SCREENS.START === currentScreen) {
+    return renderComponent()
+  }
+
+  return <MainLayout muted={muted}> {renderComponent()}</MainLayout>
 }
 
 

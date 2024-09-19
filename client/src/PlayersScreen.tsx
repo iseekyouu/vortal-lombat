@@ -1,36 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import fighters, { Fighter } from './Fighters'; // Keeping the original import
-
-interface GridItemProps {
-  fighter: Fighter;
-  onSelect: (fighter: Fighter) => void;
-  isSelected: boolean;
-  choosingPlayer2: boolean; // New prop for player2 animation
-}
+import PlayerGridItem from './PlayerGridItem';
 
 interface GridProps {
   chooseFighter: (fighter: Fighter) => void;
   hideFighters: boolean;
   chooseFighter2: (fighter: Fighter) => void;
+  muted?: boolean;
 }
 
-// GridItem Component
-const GridItem: React.FC<GridItemProps> = ({ fighter, onSelect, isSelected, choosingPlayer2 }) => (
-  <div
-    className={`relative h-40 w-40 bg-cover bg-center border-4
-      ${isSelected ? 'border-red-600 scale-110' : 'border-yellow-600 hover:scale-110'}
-      ${choosingPlayer2 ? 'animate-pulse' : ''}
-      shadow-xl transition-transform duration-300 hover:border-red-600`}
-    style={{ backgroundImage: `url(${fighter.avatar})`, boxShadow: "inset 0 0 10px black, 0 0 15px red" }}
-    onClick={() => onSelect(fighter)} // Handle item click
-  >
-    <div className="absolute bottom-0 left-0 right-0 bg-red-800 bg-opacity-75 text-center text-yellow-400 font-bold text-xs uppercase tracking-wider py-1">
-      <span>{fighter.name}</span>
-    </div>
-  </div>
-);
-
-const GridLayout: React.FC<GridProps> = ({ chooseFighter, hideFighters, chooseFighter2 }) => {
+const GridLayout: React.FC<GridProps> = ({ chooseFighter, hideFighters, chooseFighter2, muted }) => {
   const [selectedFighter, setSelectedFighter] = useState<Fighter | null>(null);
   const [choosingPlayer2, setChoosingPlayer2] = useState(false);
   const [shuffledFighters, setShuffledFighters] = useState<Fighter[]>([]);
@@ -89,12 +68,13 @@ const GridLayout: React.FC<GridProps> = ({ chooseFighter, hideFighters, chooseFi
 
       <div className="grid grid-cols-5 gap-0 p-0">
         {shuffledFighters.map((fighter) => (
-          <GridItem
+          <PlayerGridItem
             key={fighter.name}
             fighter={fighter}
             onSelect={handleSelectFighter}
             isSelected={selectedFighter?.name === fighter.name}
             choosingPlayer2={choosingPlayer2} // Pass the state to indicate player2 is being chosen
+            muted={muted}
           />
         ))}
       </div>
