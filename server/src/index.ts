@@ -1,8 +1,7 @@
 require("dotenv").config();
 import express, { Request, Response } from "express";
 import axios from "axios";
-import cors from 'cors';
-import Fighter from "./Fighter";
+import cors from "cors";
 
 const askChatGPT = async (message: string) => {
   try {
@@ -57,7 +56,18 @@ const absurdWeaponsList = [
   "кошачий коготь в носке",
 ];
 
-const performRound = async (player1: Fighter, player2: Fighter) => {
+type Player = {
+  id: number;
+  name: string;
+  health: number;
+  powerMin: number;
+  powerMax: number;
+  defense: number;
+  critical: number;
+  evasion: number;
+};
+
+const performRound = async (player1: Player, player2: Player) => {
   // players turn
   const p1dmg =
     player1.powerMin +
@@ -66,20 +76,50 @@ const performRound = async (player1: Fighter, player2: Fighter) => {
     player2.powerMin +
     Math.floor(Math.random() * (player2.powerMax - player2.powerMin + 1));
 
+  const p1evaded = Math.random() * 100 < player1.evasion;
+  const p2evaded = Math.random() * 100 < player2.evasion;
+
   const getRandomItem = (list: string[]) =>
     list[Math.floor(Math.random() * list.length)];
 
-  const getPrompt = (name1: string, name2: string, weapon: string) =>
+  const getNormalPrompt = (name1: string, name2: string, weapon: string) =>
     `Опиши смешно используя 1 короткое предложение. Идет драка, человек по имени ${name1} атакует человека по имени ${name2} используя в качестве оружия ${weapon}. ${name2} получает серьезные повреждения`;
+
+  const getEvasivePrompt = (name1: string, name2: string, weapon: string) =>
+    `Опиши смешно используя 1 короткое предложение. Идет драка, человек по имени ${name1} атакует человека по имени ${name2} используя в качестве оружия ${weapon}, но ${name2} уклоняется и не получает повреждений`;
+
+  let p1prompt = getNormalPrompt(
+    player1.name,
+    player2.name,
+    getRandomItem(absurdWeaponsList)
+  );
+
+  let p2prompt = getNormalPrompt(
+    player2.name,
+    player1.name,
+    getRandomItem(absurdWeaponsList)
+  );
+
+  if (p1evaded) {
+    p2prompt = getEvasivePrompt(
+      player2.name,
+      player1.name,
+      getRandomItem(absurdWeaponsList)
+    );
+  }
+
+  if (p2evaded) {
+    p1prompt = getEvasivePrompt(
+      player1.name,
+      player2.name,
+      getRandomItem(absurdWeaponsList)
+    );
+  }
 
   console.time("askChatGPT");
   const [p1text, p2text] = await Promise.all([
-    askChatGPT(
-      getPrompt(player1.name, player2.name, getRandomItem(absurdWeaponsList))
-    ),
-    askChatGPT(
-      getPrompt(player2.name, player1.name, getRandomItem(absurdWeaponsList))
-    ),
+    askChatGPT(p1prompt),
+    askChatGPT(p2prompt),
   ]);
   console.timeEnd("askChatGPT");
 
@@ -100,31 +140,14 @@ app.get("/", (req: Request, res: Response) => {
 
 app.post("/fight", async (req: Request, res: Response) => {
   const { fighter1, fighter2 } = req.body;
-  console.log(req.body);
+
+  const player1 = fighter1;
+  const player2 = fighter2;
 
   // Validate the request body
   if (!fighter1 || !fighter2) {
     return res.status(400).send("Both fighter1 and fighter2 are required");
   }
-
-  // Create Fighter instances
-  const player1 = new Fighter(fighter1.id, fighter1.name, fighter1.avatar, {
-    health: fighter1.health,
-    powerMin: fighter1.powerMin,
-    powerMax: fighter1.powerMax,
-    defense: fighter1.defense,
-    critical: fighter1.critical,
-    evasion: fighter1.evasion,
-  });
-
-  const player2 = new Fighter(fighter2.id, fighter2.name, fighter2.avatar, {
-    health: fighter2.health,
-    powerMin: fighter2.powerMin,
-    powerMax: fighter2.powerMax,
-    defense: fighter2.defense,
-    critical: fighter2.critical,
-    evasion: fighter2.evasion,
-  });
 
   // players turn
   const round = await performRound(player1, player2);

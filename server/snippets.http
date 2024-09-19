@@ -7,12 +7,14 @@ Content-Type: application/json
 
 {
   "fighter1": {
-    "name": "Биба",
+    "name": "Биба-Доджер",
+    "evasion": 99,
     "powerMin": 3,
     "powerMax": 15
   },
   "fighter2": {
     "name": "Боба",
+    "evasion": 1,
     "powerMin": 32,
     "powerMax": 153
   }
