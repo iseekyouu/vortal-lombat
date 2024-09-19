@@ -62,15 +62,15 @@ const CombatLog: React.FC<{ rounds: ResponseFight[]; isLoading: boolean }> = ({
       setIsScrollVisible(logElement.scrollHeight > logElement.clientHeight);
     }
   }, [rounds]); // Re-check scroll visibility when new content is added
+
   return (
     <div
       ref={logRef}
       className={`p-4 grow text-yellow-400
        bg-zinc-800 overflow-y-auto max-h-full
        ml-2 ${isScrollVisible ? "" : "mr-2"}
-       h-max-[50%]
        `}
-      style={{ maxHeight: "calc(100vh - 200px)" }} // Adjust height accordingly
+      style={{ maxHeight: "calc(100vh - 300px)" }} // Adjust height accordingly
     >
       {rounds.map((entry, index) => {
         const p1dmgText =
@@ -79,14 +79,14 @@ const CombatLog: React.FC<{ rounds: ResponseFight[]; isLoading: boolean }> = ({
           parseInt(entry.p2dmg) > 0 ? `Damage: ${entry.p2dmg}` : "УВОРОТ!!!";
 
         return (
-          <div key={index} className="mb-4">
+          <div key={index} className="mb-4 text-lg">
             <p>
               <span className="text-blue-400">{entry.p1text}</span>
-              <span className="ml-2 text-red-400 font-bold">{p1dmgText}</span>
+              <span className="ml-2 text-red-400 font-bold ">{p1dmgText}</span>
             </p>
             <p>
               <span className="text-green-400">{entry.p2text}</span>
-              <span className="ml-2 text-red-400 font-bold">{p2dmgText}</span>
+              <span className="ml-2 text-red-400 font-bold ">{p2dmgText}</span>
             </p>
           </div>
         );
@@ -94,7 +94,9 @@ const CombatLog: React.FC<{ rounds: ResponseFight[]; isLoading: boolean }> = ({
 
       {/* Typing Loader */}
       {isLoading && (
-        <div className="flex justify-center mt-4">
+        <div className={`flex justify-center
+        ml-2 ${isScrollVisible ? "" : "mr-2"}
+        `}>
           <img src={Emblem2} alt="Loading..." className="w-12 h-12" />
         </div>
       )}
@@ -139,7 +141,6 @@ const FinishHimButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
       onClick={onClick}
       className="text-6xl font-bold text-yellow-400 uppercase border-4 border-red-600 bg-black px-8 py-4 mt-8
         hover:bg-red-600 hover:text-white hover:border-yellow-400 shadow-lg animate-pulse transition-all duration-300
-        mb-15
         "
     >
       Finish Him!
@@ -171,6 +172,7 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish }) => {
 
     if (player1.health <= 0 || player2.health <= 0) {
       setFightFinished(true);
+      setIsLoading(false);
       return true;
     }
 
@@ -187,10 +189,10 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish }) => {
   }
 
   React.useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && !fightFinished) {
       handleRound();
     }
-  }, [isLoading, handleRound]);
+  }, [isLoading, handleRound, fightFinished]);
 
   return (
     <div className="flex flex-col items-center bg-black text-white min-h-screen">
@@ -199,10 +201,13 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish }) => {
       </h1>
       <div className="flex w-full justify-around items-start bg-zinc-900 p-6 rounded-lg">
         <PlayerSheet player={player1} />
-        <CombatLog rounds={combatLog} isLoading={isLoading} />
+        <div>
+          <CombatLog rounds={combatLog} isLoading={isLoading} />
+        </div>
+
         <PlayerSheet player={player2} />
       </div>
-      <div>{fightFinished && <FinishHimButton onClick={finishHim} />}</div>
+      <div className='mb-15'>{fightFinished && <FinishHimButton onClick={finishHim} />}</div>
     </div>
   );
 };

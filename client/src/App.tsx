@@ -30,7 +30,7 @@ const SCREENS = {
 function App() {
   const [selectedFighter, setSelectedFighter] = React.useState<Fighter | null>(Fighters[0]);
   const [hideFighters, setHideFighters] = React.useState(false);
-  const [currentScreen, setCurrentScreen] = React.useState(SCREENS.FIGHT);
+  const [currentScreen, setCurrentScreen] = React.useState(SCREENS.PLAYERS);
   const [player2, setPlayer2] = React.useState<Fighter>(Fighters[1]);
   const [winner, setWinner] = React.useState<Fighter>(Fighters[0]);
 

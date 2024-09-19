@@ -25,7 +25,7 @@ class Fighter {
     // this.powerMin = powerMin;
     this.powerMin = 10;
     // this.powerMax = powerMax;
-    this.powerMax = 20;
+    this.powerMax = 90;
     this.defense = defense;
     this.critical = critical;
     this.evasion = evasion;
