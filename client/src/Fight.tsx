@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import Fighter from "./Fighter";
-import Emblem2 from './gifs/emblem_2.gif';
+import Emblem2 from "./gifs/emblem_2.gif";
 
 type ResponseFight = {
   p1dmg: string;
@@ -18,14 +18,22 @@ interface FightProps {
 // Player Sheet styled like MK3's player stats panel
 const PlayerSheet: React.FC<{ player: Fighter }> = ({ player }) => {
   return (
-    <div className="flex flex-col items-center
+    <div
+      className="flex flex-col items-center
      border-red-600 p-4 shadow-xl bg-zinc-800 text-yellow-400
      max-w-[20%] min-w-[20%]
-     ">
-      <img src={player.avatar} alt={player.name} className="w-40 h-40 border-yellow-600 shadow-lg mb-4" />
+     "
+    >
+      <img
+        src={player.avatar}
+        alt={player.name}
+        className="w-40 h-40 border-yellow-600 shadow-lg mb-4"
+      />
       <h2 className="text-3xl font-bold uppercase">{player.name}</h2>
       <p className="text-lg mt-2">Health: {player.health}</p>
-      <p className="text-lg">Power: {player.powerMin} - {player.powerMax}</p>
+      <p className="text-lg">
+        Power: {player.powerMin} - {player.powerMax}
+      </p>
       <p className="text-lg">Defense: {player.defense}</p>
       <p className="text-lg">Critical: {player.critical}</p>
       <p className="text-lg">Evasion: {player.evasion}</p>
@@ -34,7 +42,10 @@ const PlayerSheet: React.FC<{ player: Fighter }> = ({ player }) => {
 };
 
 // Combat log styled in MK3's bold text style with colorful damage indicators
-const CombatLog: React.FC<{ rounds: ResponseFight[]; isLoading: boolean }> = ({ rounds, isLoading }) => {
+const CombatLog: React.FC<{ rounds: ResponseFight[]; isLoading: boolean }> = ({
+  rounds,
+  isLoading,
+}) => {
   const logRef = useRef<HTMLDivElement>(null);
   const [isScrollVisible, setIsScrollVisible] = React.useState(false);
 
@@ -44,7 +55,6 @@ const CombatLog: React.FC<{ rounds: ResponseFight[]; isLoading: boolean }> = ({ 
       logRef.current.scrollTop = logRef.current.scrollHeight + 200;
     }
   }, [rounds]);
-
 
   useEffect(() => {
     const logElement = logRef.current;
@@ -62,18 +72,25 @@ const CombatLog: React.FC<{ rounds: ResponseFight[]; isLoading: boolean }> = ({ 
        `}
       style={{ maxHeight: "calc(100vh - 200px)" }} // Adjust height accordingly
     >
-      {rounds.map((entry, index) => (
-        <div key={index} className="mb-4">
-          <p>
-            <span className="text-blue-400">{entry.p1text}</span>
-            <span className="ml-2 text-red-400 font-bold">Damage: {entry.p1dmg}</span>
-          </p>
-          <p>
-            <span className="text-green-400">{entry.p2text}</span>
-            <span className="ml-2 text-red-400 font-bold">Damage: {entry.p2dmg}</span>
-          </p>
-        </div>
-      ))}
+      {rounds.map((entry, index) => {
+        const p1dmgText =
+          parseInt(entry.p1dmg) > 0 ? `Damage: ${entry.p1dmg}` : "УВОРОТ!!!";
+        const p2dmgText =
+          parseInt(entry.p2dmg) > 0 ? `Damage: ${entry.p2dmg}` : "УВОРОТ!!!";
+
+        return (
+          <div key={index} className="mb-4">
+            <p>
+              <span className="text-blue-400">{entry.p1text}</span>
+              <span className="ml-2 text-red-400 font-bold">{p1dmgText}</span>
+            </p>
+            <p>
+              <span className="text-green-400">{entry.p2text}</span>
+              <span className="ml-2 text-red-400 font-bold">{p2dmgText}</span>
+            </p>
+          </div>
+        );
+      })}
 
       {/* Typing Loader */}
       {isLoading && (
@@ -130,7 +147,6 @@ const FinishHimButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   );
 };
 
-
 // Main Fight component styled like MK3
 const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish }) => {
   const [combatLog, setCombatLog] = React.useState<ResponseFight[]>([]);
@@ -163,7 +179,11 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish }) => {
   }, [player1, player2, combatLog, onFightFinish]);
 
   function finishHim() {
-    onFightFinish(Math.max(player1.health, player2.health) === player1.health ? player1 : player2);
+    onFightFinish(
+      Math.max(player1.health, player2.health) === player1.health
+        ? player1
+        : player2
+    );
   }
 
   React.useEffect(() => {
@@ -182,9 +202,7 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish }) => {
         <CombatLog rounds={combatLog} isLoading={isLoading} />
         <PlayerSheet player={player2} />
       </div>
-      <div>
-        {fightFinished && <FinishHimButton onClick={finishHim} />}
-      </div>
+      <div>{fightFinished && <FinishHimButton onClick={finishHim} />}</div>
     </div>
   );
 };

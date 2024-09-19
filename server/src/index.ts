@@ -68,16 +68,16 @@ type Player = {
 };
 
 const performRound = async (player1: Player, player2: Player) => {
-  // players turn
-  const p1dmg =
-    player1.powerMin +
-    Math.floor(Math.random() * (player1.powerMax - player1.powerMin + 1));
-  const p2dmg =
-    player2.powerMin +
-    Math.floor(Math.random() * (player2.powerMax - player2.powerMin + 1));
-
   const p1evaded = Math.random() * 100 < player1.evasion;
   const p2evaded = Math.random() * 100 < player2.evasion;
+  const p1dmg = p2evaded
+    ? 0
+    : player1.powerMin +
+      Math.floor(Math.random() * (player1.powerMax - player1.powerMin + 1));
+  const p2dmg = p1evaded
+    ? 0
+    : player2.powerMin +
+      Math.floor(Math.random() * (player2.powerMax - player2.powerMin + 1));
 
   const getRandomItem = (list: string[]) =>
     list[Math.floor(Math.random() * list.length)];
