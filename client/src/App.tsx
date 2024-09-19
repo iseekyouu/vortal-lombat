@@ -10,20 +10,14 @@ import MainTheme from './audio/main_theme.m4a';
 
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const audioRef = React.useRef<HTMLAudioElement>(null);
-  const [isMuted, setIsMuted] = React.useState(false);
+  const [isPlaying, setIsPlaying] = React.useState(false);
 
-  const toggleMute = () => {
+  const handlePlay = () => {
     if (audioRef.current) {
-      audioRef.current.muted = !audioRef.current.muted;
-      setIsMuted(audioRef.current.muted);
+      audioRef.current.play();
+      setIsPlaying(!isPlaying);
     }
   };
-
-  React.useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.play(); // Start playing on load
-    }
-  }, []);
 
   return (
     <div className="App">
@@ -33,10 +27,10 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
       {/* Mute/Unmute Button */}
       <button
-        onClick={toggleMute}
+        onClick={handlePlay}
         className="mt-4 px-6 py-3 bg-red-600 text-white font-bold text-xl rounded-lg hover:bg-red-800"
       >
-        {isMuted ? 'Unmute' : 'Mute'}
+        {isPlaying ? 'Mute' : 'Unmute'}
       </button>
 
         <div className="h-screen w-full">
