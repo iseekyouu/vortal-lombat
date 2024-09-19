@@ -10,25 +10,31 @@ interface FightLoadingScreenProps {
 
 const VersusScreen: React.FC<FightLoadingScreenProps> = ({ player1, player2, onFightStart }) => {
   const [loadingComplete, setLoadingComplete] = useState(false);
-
-  // Simulate loading screen with a timer before starting the fight
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoadingComplete(true);
-      onFightStart(); // Start the fight after the loading completes
-    }, 3000); // 3 seconds loading screen
+    }, 2600); // 3 seconds loading screen
 
     return () => clearTimeout(timer); // Cleanup the timer on unmount
   }, [onFightStart]);
 
+  useEffect(() => {
+    if (loadingComplete) {
+      const timer = setTimeout(() => {
+        onFightStart();
+      }, 1500);
+      return () => clearTimeout(timer); // Cleanup the timer on unmount
+  }}, [loadingComplete]);
+
   return (
     <div
-      className="flex items-center justify-center h-[70vh] w-screen bg-cover bg-center"
+      className="flex flex-col items-center justify-center w-screen min-h-full bg-cover bg-center"
       style={{
         backgroundImage: `url(${VersusBackground})`, // Set the background image
       }}
     >
-      <div className="flex justify-center items-center space-x-16">
+      {/* Row 1: Players and VS */}
+      <div className="flex justify-center items-center">
         {/* Player 1 */}
         <div className="flex flex-col items-center">
           <img
@@ -40,7 +46,7 @@ const VersusScreen: React.FC<FightLoadingScreenProps> = ({ player1, player2, onF
         </div>
 
         {/* VS */}
-        <div className="text-red-600 text-7xl font-bold animate-pulse">
+        <div className="text-red-600 text-7xl font-bold animate-pulse mx-8">
           VS
         </div>
 
@@ -55,20 +61,24 @@ const VersusScreen: React.FC<FightLoadingScreenProps> = ({ player1, player2, onF
         </div>
       </div>
 
-      {/* Loading Spinner / Fight Animation */}
-      {!loadingComplete && (
-        <div className="mt-12">
-          <div className="text-5xl text-yellow-400 font-bold uppercase animate-bounce">FIGHT!</div>
-          <div className="mt-4 text-lg text-red-600 animate-pulse">Loading...</div>
-        </div>
-      )}
+      {/* Row 2: FIGHT / Loading Animation */}
+      <div className="flex justify-center items-center mt-12 ml-10">
+        {!loadingComplete && (
+          <div className="text-center">
+            <div className="text-5xl text-yellow-400 font-bold uppercase animate-bounce">FIGHT!</div>
+            <div className="mt-4 text-4xl text-red-600 animate-pulse">Loading...</div>
+          </div>
+        )}
+      </div>
 
-      {/* Hidden when loading is complete */}
-      {loadingComplete && (
-        <div className="mt-12">
-          <div className="text-5xl text-red-600 font-bold uppercase animate-pulse">Fight begins!</div>
-        </div>
-      )}
+      {/* Row 3: Fight Begins */}
+      <div className="flex justify-center items-center ml-10">
+        {loadingComplete && (
+          <div className="text-center">
+            <div className="text-7xl text-yellow-400 font-bold uppercase animate-pulse">Fight begins!</div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

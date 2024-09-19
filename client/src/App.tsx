@@ -11,7 +11,9 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <div className="App">
       <header className="App-header">
         <p>VORTAL LOMBAT 0.0.0</p>
+        <div className="h-[80vh]">
         {children}
+        </div>
       </header>
     </div>
   );
@@ -25,10 +27,10 @@ const SCREENS = {
 }
 
 function App() {
-  const [selectedFighter, setSelectedFighter] = React.useState<Fighter | null>(null);
+  const [selectedFighter, setSelectedFighter] = React.useState<Fighter | null>(Fighters[0]);
   const [hideFighters, setHideFighters] = React.useState(false);
   const [currentScreen, setCurrentScreen] = React.useState(SCREENS.PLAYERS);
-  const [player2, setPlayer2] = React.useState<Fighter>(Fighters[0]);
+  const [player2, setPlayer2] = React.useState<Fighter>(Fighters[1]);
 
 
   function chooseFighter(fighter: Fighter) {
