@@ -29,24 +29,42 @@ const PlayerSheet: React.FC<{ player: Fighter }> = ({ player }) => {
   );
 };
 
-const CombatLog: React.FC<{ log: string[] }> = ({ log }) => {
+const CombatLog: React.FC<{ rounds: ResponseFight[]; isLoading: boolean }> = ({
+  rounds,
+  isLoading,
+}) => {
   return (
     <div className="border-indigo-600 border-2 grow">
-      {log.map((entry, index) => (
-        <p key={index}>{entry}</p>
+      {rounds.map((entry, index) => (
+        <div key={index} className="mb-2">
+          <p>
+            <span className="text-blue-600">{entry.p1text}</span>
+            <span className="ml-2 text-rose-600">Урон: {entry.p1dmg}</span>
+          </p>
+          <p>
+            <span className="text-emerald-600">{entry.p2text}</span>
+            <span className="ml-2 text-rose-600">Урон: {entry.p2dmg}</span>
+          </p>
+        </div>
       ))}
+      <Loader active={isLoading} />
     </div>
   );
 };
 
+const Loader: React.FC<{ active: boolean }> = ({ active }) => {
+  if (!active) return null;
+
+  return <div>loading</div>;
+};
+
 const Fight: React.FC<FightProps> = ({ player1, player2 }) => {
-  const [combatLog, setCombatLog] = React.useState<string[]>([
-    "Fight started",
-    "First round",
-  ]);
+  const [combatLog, setCombatLog] = React.useState<ResponseFight[]>([]);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const handleRound = async () => {
-    const result = await fetch("http://localhost:3092/fight", {
+    setIsLoading(true);
+    const response = await fetch("http://localhost:3092/fight", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,7 +72,9 @@ const Fight: React.FC<FightProps> = ({ player1, player2 }) => {
       body: JSON.stringify({ fighter1: player1, fighter2: player2 }),
     });
 
-    console.log(result);
+    const result: ResponseFight = await response.json();
+    setCombatLog([...combatLog, result]);
+    setIsLoading(false);
   };
 
   return (
@@ -65,7 +85,7 @@ const Fight: React.FC<FightProps> = ({ player1, player2 }) => {
       <button onClick={() => handleRound()}>Start Fight</button>
       <div className="flex w-full bg-zinc-200">
         <PlayerSheet player={player1} />
-        <CombatLog log={combatLog} />
+        <CombatLog rounds={combatLog} isLoading={isLoading} />
         <PlayerSheet player={player2} />
       </div>
     </div>

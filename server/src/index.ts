@@ -1,6 +1,7 @@
 require("dotenv").config();
 import express, { Request, Response } from "express";
 import axios from "axios";
+import cors from 'cors';
 import Fighter from "./Fighter";
 
 const askChatGPT = async (message: string) => {
@@ -90,7 +91,7 @@ const port = 3092;
 
 // Middleware to parse JSON
 app.use(express.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 // A basic GET route
 app.get("/", (req: Request, res: Response) => {
