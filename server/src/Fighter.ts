@@ -22,10 +22,8 @@ class Fighter {
     this.avatar = avatar;
     this.name = name;
     this.health = health;
-    // this.powerMin = powerMin;
-    this.powerMin = 30;
-    // this.powerMax = powerMax;
-    this.powerMax = 50;
+    this.powerMin = powerMin;
+    this.powerMax = powerMax;
     this.defense = defense;
     this.critical = critical;
     this.evasion = evasion;

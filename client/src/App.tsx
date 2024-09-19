@@ -30,14 +30,20 @@ const SCREENS = {
 function App() {
   const [selectedFighter, setSelectedFighter] = React.useState<Fighter | null>(Fighters[0]);
   const [hideFighters, setHideFighters] = React.useState(false);
-  const [currentScreen, setCurrentScreen] = React.useState(SCREENS.WIN);
+  const [currentScreen, setCurrentScreen] = React.useState(SCREENS.PLAYERS);
   const [player2, setPlayer2] = React.useState<Fighter>(Fighters[1]);
+  const [winner, setWinner] = React.useState<Fighter>(Fighters[0]);
 
 
   function chooseFighter(fighter: Fighter) {
     setSelectedFighter(fighter);
     setHideFighters(true);
     setCurrentScreen(SCREENS.VERSUS);
+  }
+
+  function onFightFinish(winner: Fighter) {
+    setWinner(winner);
+    setCurrentScreen(SCREENS.WIN);
   }
 
   const renderPlayers = () => <PlayersScreen
@@ -61,10 +67,11 @@ function App() {
           <Fight
             player1={selectedFighter}
             player2={player2}
+            onFightFinish={onFightFinish}
           />
         );
         case SCREENS.WIN:
-          return <WinnerScreen winner={selectedFighter} />;
+          return <WinnerScreen winner={winner} />;
       default:
         return renderPlayers();
     }
