@@ -20,6 +20,8 @@ function App() {
   }
 
   const renderComponent = () => {
+
+
     if (selectedFighter === null || player2 === null) {
       return <Players chooseFighter={chooseFighter} hideFighters={hideFighters} />;
     }
