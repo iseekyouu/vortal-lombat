@@ -26,4 +26,6 @@ const fightersRaw = [{
   }
 ];
 
-export default fightersRaw.map(fighter => new Figter(fighter.name, fighter.avatar));
+export default fightersRaw.map((fighter, index) =>
+    new Figter(index, fighter.name, fighter.avatar)
+);

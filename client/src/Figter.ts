@@ -1,4 +1,5 @@
 class Figter {
+  public id: number;
   public name: string;
   public avatar: string;
   public health: number;
@@ -9,7 +10,7 @@ class Figter {
   public evasion: number;
 
 
-  constructor(name: string, avatar: string, {
+  constructor(id: number, name: string, avatar: string, {
     health = 100,
     powerMin = 2,
     powerMax = 10,
@@ -17,6 +18,7 @@ class Figter {
     critical = 5,
     evasion = 5,
   } = {}) {
+    this.id = id;
     this.avatar = avatar;
     this.name = name;
     this.health = health;

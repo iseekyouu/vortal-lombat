@@ -11,14 +11,6 @@ function App() {
         <p>
           VORTAL LOMBAT 0.0.0
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
         <Players />
       </header>
     </div>
