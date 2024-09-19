@@ -58,7 +58,7 @@ const CombatLog: React.FC<{ rounds: ResponseFight[]; isLoading: boolean }> = ({ 
       className={`p-4 grow text-yellow-400
        bg-zinc-800 overflow-y-auto max-h-full
        ml-2 ${isScrollVisible ? "" : "mr-2"}
-       h-max-[80%]
+       h-max-[50%]
        `}
       style={{ maxHeight: "calc(100vh - 200px)" }} // Adjust height accordingly
     >
@@ -121,7 +121,9 @@ const FinishHimButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
       ref={buttonRef}
       onClick={onClick}
       className="text-6xl font-bold text-yellow-400 uppercase border-4 border-red-600 bg-black px-8 py-4 mt-8
-        hover:bg-red-600 hover:text-white hover:border-yellow-400 shadow-lg animate-pulse transition-all duration-300"
+        hover:bg-red-600 hover:text-white hover:border-yellow-400 shadow-lg animate-pulse transition-all duration-300
+        mb-15
+        "
     >
       Finish Him!
     </button>
