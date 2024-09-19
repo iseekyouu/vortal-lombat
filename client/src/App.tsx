@@ -12,7 +12,6 @@ function App() {
   const [player2, setPlayer2] = React.useState<Fighter | null>(Fighters[0]);
   // TODO PC PLAYER
 
-
   function chooseFighter(fighter: Fighter) {
     setSelectedFighter(fighter);
     setHideFighters(true);

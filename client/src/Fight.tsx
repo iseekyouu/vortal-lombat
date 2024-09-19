@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useCallback } from "react";
 import Fighter from "./Fighter";
+import TypingSpinner from "./TypingSpinner";
 
 type ResponseFight = {
   p1dmg: string;
@@ -34,9 +35,9 @@ const CombatLog: React.FC<{ rounds: ResponseFight[]; isLoading: boolean }> = ({
   isLoading,
 }) => {
   return (
-    <div className="border-indigo-600 border-2 grow">
+    <div className="border-indigo-600 border-2 grow px-3 pt-2">
       {rounds.map((entry, index) => (
-        <div key={index} className="mb-2">
+        <div key={index} className="mb-1">
           <p>
             <span className="text-blue-600">{entry.p1text}</span>
             <span className="ml-2 text-rose-600">Урон: {entry.p1dmg}</span>
@@ -55,14 +56,18 @@ const CombatLog: React.FC<{ rounds: ResponseFight[]; isLoading: boolean }> = ({
 const Loader: React.FC<{ active: boolean }> = ({ active }) => {
   if (!active) return null;
 
-  return <div>loading</div>;
+  return (
+    <div>
+      <TypingSpinner />
+    </div>
+  );
 };
 
 const Fight: React.FC<FightProps> = ({ player1, player2 }) => {
   const [combatLog, setCombatLog] = React.useState<ResponseFight[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const handleRound = async () => {
+  const handleRound = useCallback(async () => {
     setIsLoading(true);
     const response = await fetch("http://localhost:3092/fight", {
       method: "POST",
@@ -74,8 +79,23 @@ const Fight: React.FC<FightProps> = ({ player1, player2 }) => {
 
     const result: ResponseFight = await response.json();
     setCombatLog([...combatLog, result]);
+
+    player1.health -= parseInt(result.p2dmg);
+    player2.health -= parseInt(result.p1dmg);
+
+    if (player1.health <= 0 || player2.health <= 0) {
+      return true;
+    }
+
     setIsLoading(false);
-  };
+    return false;
+  }, [player1, player2, combatLog]);
+
+  React.useEffect(() => {
+    if (!isLoading) {
+      handleRound();
+    }
+  }, [isLoading, handleRound]);
 
   return (
     <div>
