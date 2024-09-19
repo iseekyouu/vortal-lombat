@@ -66,7 +66,7 @@ const Loader: React.FC<{ active: boolean }> = ({ active }) => {
 
 const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish }) => {
   const [combatLog, setCombatLog] = React.useState<ResponseFight[]>([]);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const handleRound = useCallback(async () => {
     setIsLoading(true);
@@ -91,20 +91,19 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish }) => {
 
     setIsLoading(false);
     return false;
-  }, [player1, player2, combatLog]);
+  }, [player1, player2, combatLog, onFightFinish]);
 
-  React.useEffect(() => {
-    if (!isLoading) {
-      handleRound();
-    }
-  }, [isLoading, handleRound]);
+  // React.useEffect(() => {
+  //   if (!isLoading) {
+  //     handleRound();
+  //   }
+  // }, [isLoading, handleRound]);
 
   return (
     <div>
       <h1>
         Fight between {player1.name} and {player2.name}
       </h1>
-      <button onClick={() => handleRound()}>Start Fight</button>
       <div className="flex w-full bg-zinc-200">
         <PlayerSheet player={player1} />
         <CombatLog rounds={combatLog} isLoading={isLoading} />

@@ -12,7 +12,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <div className="App">
       <header className="App-header">
         <p>VORTAL LOMBAT 0.0.1</p>
-        <div className="h-screen">
+        <div className="h-screen w-full">
         {children}
         </div>
       </header>
@@ -30,7 +30,7 @@ const SCREENS = {
 function App() {
   const [selectedFighter, setSelectedFighter] = React.useState<Fighter | null>(Fighters[0]);
   const [hideFighters, setHideFighters] = React.useState(false);
-  const [currentScreen, setCurrentScreen] = React.useState(SCREENS.PLAYERS);
+  const [currentScreen, setCurrentScreen] = React.useState(SCREENS.FIGHT);
   const [player2, setPlayer2] = React.useState<Fighter>(Fighters[1]);
   const [winner, setWinner] = React.useState<Fighter>(Fighters[0]);
 
