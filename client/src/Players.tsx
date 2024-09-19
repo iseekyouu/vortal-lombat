@@ -1,5 +1,5 @@
 import React from 'react';
-import fighters, { Fighter } from './Figters';
+import fighters, { Fighter } from './Fighters';
 
 interface GridItemProps {
   fighter: Fighter;
