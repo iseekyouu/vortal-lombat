@@ -1,10 +1,11 @@
 import React from "react";
 import Fighter from "./Fighter";
 
-type Round = {
-  p1dmg: number;
-  p2dmg: number;
-  text: string;
+type ResponseFight = {
+  p1dmg: string;
+  p2dmg: string;
+  p1text: string;
+  p2text: string;
 };
 
 interface FightProps {
@@ -15,7 +16,7 @@ interface FightProps {
 const PlayerSheet: React.FC<{ player: Fighter }> = ({ player }) => {
   return (
     <div className="flex flex-col items-center border-indigo-600 border-2">
-      <img src={player.avatar} alt={player.name} />
+      <img src={player.avatar} alt={player.name} className="max-w-[150px]" />
       <h2>{player.name}</h2>
       <p>Health: {player.health}</p>
       <p>
@@ -44,10 +45,16 @@ const Fight: React.FC<FightProps> = ({ player1, player2 }) => {
     "First round",
   ]);
 
-  const handleRound = (round: Round) => {
-    setCombatLog([...combatLog, round.text]);
-    player1.health -= round.p2dmg;
-    player2.health -= round.p1dmg;
+  const handleRound = async () => {
+    const result = await fetch("http://localhost:3092/fight", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ fighter1: player1, fighter2: player2 }),
+    });
+
+    console.log(result);
   };
 
   return (
@@ -55,18 +62,8 @@ const Fight: React.FC<FightProps> = ({ player1, player2 }) => {
       <h1>
         Fight between {player1.name} and {player2.name}
       </h1>
-      <button
-        onClick={() =>
-          handleRound({
-            p1dmg: 10,
-            p2dmg: 5,
-            text: "Player 1 hits Player 2 for 10 damage",
-          })
-        }
-      >
-        Start Fight
-      </button>
-      <div className="flex w-full bg-zinc-200 px-40">
+      <button onClick={() => handleRound()}>Start Fight</button>
+      <div className="flex w-full bg-zinc-200">
         <PlayerSheet player={player1} />
         <CombatLog log={combatLog} />
         <PlayerSheet player={player2} />
