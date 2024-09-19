@@ -5,6 +5,17 @@ import Fighter from './Fighter';
 import Fight from "./Fight";
 import Fighters from './Fighters';
 
+const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <p>VORTAL LOMBAT 0.0.0</p>
+        {children}
+      </header>
+    </div>
+  );
+};
+
 function App() {
   const [selectedFighter, setSelectedFighter] = React.useState<Fighter | null>(null);
   const [hideFighters, setHideFighters] = React.useState(false);
@@ -20,10 +31,10 @@ function App() {
   }
 
   const renderComponent = () => {
-
-
     if (selectedFighter === null || player2 === null) {
-      return <Players chooseFighter={chooseFighter} hideFighters={hideFighters} />;
+      return (
+        <Players chooseFighter={chooseFighter} hideFighters={hideFighters} />
+      );
     }
 
     switch (currentScreen) {
@@ -41,7 +52,7 @@ function App() {
     }
   };
 
-  return renderComponent();
+  return <MainLayout> {renderComponent()}</MainLayout>
 }
 
 
