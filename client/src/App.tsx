@@ -12,7 +12,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <div className="App">
       <header className="App-header">
         <p>VORTAL LOMBAT 0.0.1</p>
-        <div className="h-[80vh]">
+        <div className="h-screen">
         {children}
         </div>
       </header>

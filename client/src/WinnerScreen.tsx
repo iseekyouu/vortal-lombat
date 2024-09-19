@@ -39,6 +39,7 @@ const endingGifs = [
   Brutality2,
   Fatality2,
   Fatality3,
+  Fatality1,
 ];
 
 const getRandomColor = () => {
@@ -78,7 +79,7 @@ const WinText: React.FC<{}> = () => {
         <div className="mt-6 flex justify-center">
           <video
             src={LedenetsVideo}
-            className="w-1/2 h-auto" // Adjust width and height as needed
+            className="w-[250px] h-[180px]"
             autoPlay
             loop
             muted
@@ -101,7 +102,7 @@ const WinText: React.FC<{}> = () => {
       <img
         src={endingGifs[endingGifIndex]}
         alt="Ending Gif"
-        className="w-1/2 h-auto"
+        className="w-[250px] h-[180px]"
       />
     </div>
   </div>
@@ -113,7 +114,7 @@ const WinnerScreen: React.FC<WinPageProps> = ({ winner }) => {
 
   return (
     <div
-      className="flex flex-col items-center justify-center h-screen w-screen bg-cover bg-center"
+      className="flex flex-col items-center justify-center h-[90vh] w-screen bg-cover bg-center"
       style={{
         backgroundImage: `url(${winBackgroundArray[backgroundIndex]})`, // Set the background image for the win screen
       }}
