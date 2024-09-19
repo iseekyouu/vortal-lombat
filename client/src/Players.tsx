@@ -10,6 +10,7 @@ interface GridItemProps {
 interface GridProps {
   chooseFighter: (selectedFighter: Fighter) => void;
   hideFighters: boolean;
+  setPlayer2: (fighter: Fighter) => void;
 }
 
 
@@ -40,10 +41,22 @@ const GridItem: React.FC<GridItemProps> = ({ fighter, onSelect, isSelected }) =>
 
 const GridLayout: React.FC<GridProps> = ({ chooseFighter, hideFighters }) => {
   const [selectedFighter, setSelectedFighter] = React.useState<Fighter | null>(null);
+  const [choosingPlayer2, setChoosingPlayer2] = React.useState(false); // To manage animation state
+
+  const choosePlayer2 = () => {
+    setChoosingPlayer2(true);
+
+    // code
+  }
 
   const handleSelectFighter = (fighter: Fighter) => {
     setSelectedFighter(fighter);
   };
+
+  const submitFighter = (selectedFighter: Fighter) => {
+    choosePlayer2();
+    chooseFighter(selectedFighter)
+  }
 
 
   return (
@@ -65,7 +78,7 @@ const GridLayout: React.FC<GridProps> = ({ chooseFighter, hideFighters }) => {
 
     {selectedFighter && (
         <button
-          onClick={() => chooseFighter(selectedFighter)} // Call the function when submitting
+          onClick={() => submitFighter(selectedFighter)} // Call the function when submitting
           className="mt-4 px-4 py-2 bg-red-600 text-white font-bold rounded-md hover:bg-red-800 transition-colors"
         >
           Submit {selectedFighter.name}

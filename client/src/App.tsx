@@ -21,7 +21,6 @@ function App() {
   const [hideFighters, setHideFighters] = React.useState(false);
   const [currentScreen, setCurrentScreen] = React.useState(1);
   const [player2, setPlayer2] = React.useState<Fighter | null>(Fighters[0]);
-  // TODO PC PLAYER
 
 
   function chooseFighter(fighter: Fighter) {
@@ -30,16 +29,20 @@ function App() {
     setCurrentScreen(1);
   }
 
+  const renderPlayers = () => <Players
+    chooseFighter={chooseFighter}
+    hideFighters={hideFighters}
+    setPlayer2={setPlayer2}
+  />
+
   const renderComponent = () => {
     if (selectedFighter === null || player2 === null) {
-      return (
-        <Players chooseFighter={chooseFighter} hideFighters={hideFighters} />
-      );
+      return renderPlayers();
     }
 
     switch (currentScreen) {
       case 0:
-        return <Players chooseFighter={chooseFighter} hideFighters={hideFighters} />
+        return renderPlayers();
       case 1:
         return (
           <Fight
@@ -48,7 +51,7 @@ function App() {
           />
         );
       default:
-        return <Players chooseFighter={chooseFighter} hideFighters={hideFighters} />;
+        return renderPlayers();
     }
   };
 
