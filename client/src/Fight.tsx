@@ -9,6 +9,7 @@ import Hit5 from './audio/hit_5.mp3';
 import useAudio from './useAudio';
 import RoundAnnounce from './audio/round_announce.mp3';
 import EasterEggSound from './audio/easter_egg_1.mp3';
+import FinishHimSound from './audio/finish_fim.mp3';
 
 type ResponseFight = {
   p1dmg: string;
@@ -171,6 +172,7 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted })
   const { play: playHit5, audioRef: hit5Ref } = useAudio(Hit5, muted);
   const { play: playRoundAnnounce, audioRef: roundAnnounceRef } = useAudio(RoundAnnounce, muted);
   const { play: playEasterEgg, audioRef: EasterEggSoundRef } = useAudio(EasterEggSound, muted);
+  const { play: playFinishHim, audioRef: finishHimRef } = useAudio(FinishHimSound, muted);
 
   const hitSounds = [
     { play: playHit1, audioRef: hit1Ref },
@@ -197,8 +199,6 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted })
     setCombatLog([...combatLog, result]);
 
     player1.health -= parseInt(result.p2dmg);
-
-
     player2.health -= parseInt(result.p1dmg);
 
     const randomChance = Math.floor(Math.random() * 100) + 1;
@@ -210,6 +210,7 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted })
 
     if (player1.health <= 0 || player2.health <= 0) {
       setFightFinished(true);
+      playFinishHim();
       setIsLoading(false);
       return true;
     }
@@ -257,6 +258,7 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted })
       <audio ref={hit5Ref} src={Hit5} />
       <audio ref={roundAnnounceRef} src={RoundAnnounce} />
       <audio ref={EasterEggSoundRef} src={EasterEggSound} />
+      <audio ref={finishHimRef} src={FinishHimSound} />
 
     </div>
   );

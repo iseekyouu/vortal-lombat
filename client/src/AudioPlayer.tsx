@@ -13,9 +13,9 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSrc, playOnStart, curren
   const [volume, setVolume] = useState(1); // Volume state, default 1 (100%)
 
   // Handle play/pause toggle
-  const handlePlay = (pause?: boolean) => {
+  const handlePlay = (action?: 'play' | 'pause') => {
     if (audioRef.current) {
-      if (pause) {
+      if (action === 'pause') {
         // Fade out the audio before pausing
         const fadeStep = 0.05; // Step by which the volume will decrease
         const fadeInterval = 50; // Interval for decreasing volume in milliseconds
@@ -36,6 +36,12 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSrc, playOnStart, curren
           }
         }, fadeInterval);
 
+        return;
+      }
+
+      if (action === 'play') {
+        audioRef.current.play(); // Play the audio if it is currently paused
+        setIsPlaying(true); // Update state
         return;
       }
 
@@ -65,7 +71,11 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSrc, playOnStart, curren
 
   React.useEffect(() => {
     if (currentScreen === SCREENS.FIGHT) {
-      handlePlay(true);
+      handlePlay('pause');
+    }
+
+    if (currentScreen === SCREENS.WIN) {
+      handlePlay('play');
     }
   }, [currentScreen])
 
