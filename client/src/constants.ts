@@ -5,5 +5,6 @@ export const SCREENS = {
   VERSUS: 2,
   WIN: 3,
   DLC: 5,
+  LADDER: 6,
 }
 

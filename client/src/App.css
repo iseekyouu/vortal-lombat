@@ -43,6 +43,7 @@ html, body {
   overflow-x: hidden; /* Hide horizontal overflow */
   width: 100%; /* Ensure width is 100% of viewport */
   height: 100%; /* Ensure height is 100% of viewport */
+  background-color: #282c34;
 }
 
 * {
