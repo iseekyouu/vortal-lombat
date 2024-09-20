@@ -9,13 +9,18 @@ import WinnerScreen from './WinnerScreen';
 import MainTheme from './audio/main_theme.m4a';
 import AudioPlayer from './AudioPlayer';
 import StartScreen from './StartScreen';
+import { SCREENS } from './constants';
 
-const MainLayout: React.FC<{ children: React.ReactNode, muted?: boolean }> = ({ children, muted }) => {
+const MainLayout: React.FC<{
+  children: React.ReactNode,
+  muted?: boolean,
+  currentScreen: number,
+ }> = ({ children, muted, currentScreen }) => {
   return (
     <div className="App">
       <header className="App-header">
         <p>
-          <AudioPlayer audioSrc={MainTheme} playOnStart={!muted} />
+          <AudioPlayer audioSrc={MainTheme} playOnStart={!muted} currentScreen={currentScreen} />
         </p>
         <div className="h-screen w-full">
         {children}
@@ -25,18 +30,10 @@ const MainLayout: React.FC<{ children: React.ReactNode, muted?: boolean }> = ({ 
   );
 };
 
-const SCREENS = {
-  START: 4,
-  PLAYERS: 0,
-  FIGHT: 1,
-  VERSUS: 2,
-  WIN: 3,
-}
-
 function App() {
   const [selectedFighter, setSelectedFighter] = React.useState<Fighter | null>(Fighters[0]);
   const [hideFighters, setHideFighters] = React.useState(false);
-  const [currentScreen, setCurrentScreen] = React.useState(SCREENS.FIGHT);
+  const [currentScreen, setCurrentScreen] = React.useState(SCREENS.START);
   const [player2, setPlayer2] = React.useState<Fighter>(Fighters[1]);
   const [winner, setWinner] = React.useState<Fighter>(Fighters[0]);
   const [muted, setMuted] = React.useState(false);
@@ -97,7 +94,7 @@ function App() {
     return renderComponent()
   }
 
-  return <MainLayout muted={muted}> {renderComponent()}</MainLayout>
+  return <MainLayout muted={muted} currentScreen={currentScreen}> {renderComponent()}</MainLayout>
 }
 
 

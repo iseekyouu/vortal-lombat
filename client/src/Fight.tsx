@@ -193,7 +193,6 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted })
     setCombatLog([...combatLog, result]);
 
     player1.health -= parseInt(result.p2dmg);
-    console.log({ s: hitSounds[hitIndex] });
 
     hitSounds[hitIndex].play();
     player2.health -= parseInt(result.p1dmg);
