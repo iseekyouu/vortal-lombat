@@ -54,10 +54,54 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3092/chat
+POST http://localhost:3092/api/chat
 Content-Type: application/json
 
 {
   "message": "we need to simulate a fight between to players in mortal kombat descriptive style. fight will last multiple rounds where each player hits with his damage one time. in each round we need a text description what actions was performed and how much damage each player dealt. First player name is Biba, health: 100, min damage: 3, max damage: 15. Second player name is Boba, health: 55, min damage: 13, max damage: 25. Fight ends when any of players health is below 0. Answer format must be json array of rounds with fields: p1RemainingHealth, p2RemainingHealth, text"
 }
 
+###
+POST http://localhost:3092/api/ladder/2
+Content-Type: application/json
+
+{
+  "wins": 1
+}
+
+###
+GET http://localhost:3092/api/ladder
+
+###
+POST http://localhost:3092/api/ladder-reset
+
+
+
+    const response = await axios.post(
+      "https://api.openai.com/v1/chat/completions",
+      {
+        model: "gpt-4o", // Use the desired model
+        messages: [{ role: "user", content: message }], // Send user's message to ChatGPT
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`, // Use the API key from the .env file
+        },
+      }
+    );
+
+###
+POST https://api.openai.com/v1/chat/completions
+Authorization: Bearer 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
+Content-Type: application/json
+
+{
+  "model": "gpt-4",
+  "messages": [
+    {
+      "role": "user",
+      "content": "know any jokes huh?"
+    }
+  ]
+}
