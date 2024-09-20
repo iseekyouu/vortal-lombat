@@ -114,11 +114,13 @@ const WinText: React.FC<{}> = () => {
 
 const WinnerScreen: React.FC<WinPageProps> = ({ winner }) => {
   const backgroundIndex = Math.floor(Math.random() * winBackgroundArray.length);
-  const { play: play1 } = useAudio(Wins, false);
+  const { play: playPlayerWinSound } = useAudio(winner.winSound, false);
 
   React.useEffect(() => {
-    play1();
-  }, [play1]); // Ensure the effect runs correctly based on dependencies
+    playPlayerWinSound();
+    const timer = setInterval(() => playPlayerWinSound(), 8000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div
