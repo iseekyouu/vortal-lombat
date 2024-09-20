@@ -3,13 +3,14 @@ import "./App.css";
 import PlayersScreen from "./PlayersScreen";
 import Fighter from "./Fighter";
 import Fight from "./Fight";
-import Fighters from "./Fighters";
-import VersusScreen from "./VersusScreen";
-import WinnerScreen from "./WinnerScreen";
-import MainTheme from "./audio/main_theme.m4a";
-import AudioPlayer from "./AudioPlayer";
-import StartScreen from "./StartScreen";
-import { SCREENS } from "./constants";
+import Fighters from './Fighters';
+import VersusScreen from './VersusScreen';
+import WinnerScreen from './WinnerScreen';
+import MainTheme from './audio/main_theme.m4a';
+import AudioPlayer from './AudioPlayer';
+import StartScreen from './StartScreen';
+import { SCREENS } from './constants';
+import DlcScreen from './DlcScreen';
 import Ladder from "./Ladder";
 
 const MainLayout: React.FC<{
@@ -21,17 +22,18 @@ const MainLayout: React.FC<{
     <div className="App">
       <header className="App-header">
         <p>
-          {/* <AudioPlayer
+          <AudioPlayer
             audioSrc={MainTheme}
             playOnStart={!muted}
             currentScreen={currentScreen}
-          /> */}
+          />
         </p>
         <div className="h-screen w-full">{children}</div>
       </header>
     </div>
   );
 };
+
 
 function App() {
   const [selectedFighter, setSelectedFighter] = React.useState<Fighter | null>(
@@ -72,16 +74,15 @@ function App() {
 
     switch (currentScreen) {
       case SCREENS.START:
-        return (
-          <StartScreen
-            onStart={(muted: boolean = false) => {
-              setCurrentScreen(SCREENS.PLAYERS);
-              if (muted) {
-                setMuted(true);
-              }
-            }}
-          />
-        );
+        return <StartScreen
+          onStart={(muted: boolean = false) => {
+            setCurrentScreen(SCREENS.PLAYERS)
+            if (muted) {
+              setMuted(true);
+            }
+          }}
+          onDlcClick={() => setCurrentScreen(SCREENS.DLC)}
+        />
       case SCREENS.PLAYERS:
         return renderPlayers();
       case SCREENS.VERSUS:
@@ -105,6 +106,9 @@ function App() {
         return <WinnerScreen winner={winner} />;
       case SCREENS.LADDER:
         return renderLadder();
+
+        case SCREENS.DLC:
+          return <DlcScreen onClick={() => { setCurrentScreen(SCREENS.START)}}/>;
 
       default:
         return renderPlayers();

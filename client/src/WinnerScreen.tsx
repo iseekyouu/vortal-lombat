@@ -17,6 +17,7 @@ import Fatality3 from './gifs/fatality_3.gif'
 import useAudio from './useAudio';
 import Wins from './audio/wins/wins.m4a';
 import UncleJenya from './audio/wins/unclejenya.m4a';
+import Ladder from './Ladder';
 
 
 const winBackgroundArray = [
@@ -123,35 +124,38 @@ const WinnerScreen: React.FC<WinPageProps> = ({ winner }) => {
   }, []);
 
   return (
-    <div
-      className="flex flex-col items-center justify-center h-[90vh] w-screen bg-cover bg-center"
-      style={{
-        backgroundImage: `url(${winBackgroundArray[backgroundIndex]})`, // Set the background image for the win screen
-      }}
-    >
-      {/* Winner Section */}
-      <div className="flex flex-col items-center">
-        <img
-          src={winner.avatar}
-          alt={winner.name}
-          className="w-40 h-40 border-4 border-yellow-600 shadow-lg mb-6"
-        />
-        <h2 className="text-yellow-400 text-4xl font-bold uppercase mt-4 animate-pulse  bg-gray-800 rounded-2xl p-4">
-          {winner.name} Wins!
-        </h2>
-      </div>
-
-      {/* Win Text */}
-      <WinText />
-
-
-      {/* Play Again Button */}
-      <button
-        className="mt-12 px-6 py-3 bg-red-600 text-white font-bold text-2xl rounded-lg hover:bg-red-800 transition-colors"
-        onClick={() => window.location.reload()} // Example logic to reload the game
+    <div>
+      <div
+        className="flex flex-col items-center justify-center h-[90vh] w-screen bg-cover bg-center"
+        style={{
+          backgroundImage: `url(${winBackgroundArray[backgroundIndex]})`, // Set the background image for the win screen
+        }}
       >
-        Play Again
-      </button>
+        {/* Winner Section */}
+        <div className="flex flex-col items-center">
+          <img
+            src={winner.avatar}
+            alt={winner.name}
+            className="w-40 h-40 border-4 border-yellow-600 shadow-lg mb-6"
+          />
+          <h2 className="text-yellow-400 text-4xl font-bold uppercase mt-4 animate-pulse  bg-gray-800 rounded-2xl p-4">
+            {winner.name} Wins!
+          </h2>
+        </div>
+
+        {/* Win Text */}
+        <WinText />
+      </div>
+      <br />
+      <Ladder />
+      <div>
+      <button
+          className="mt-12 px-6 py-3 bg-red-600 text-white font-bold text-2xl rounded-lg hover:bg-red-800 transition-colors mb-12"
+          onClick={() => window.location.reload()} // Example logic to reload the game
+        >
+          Play Again
+        </button>
+      </div>
     </div>
   );
 };

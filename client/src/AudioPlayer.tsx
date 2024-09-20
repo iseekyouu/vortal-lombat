@@ -65,17 +65,15 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSrc, playOnStart, curren
   };
 
   React.useEffect(() => {
-    if (playOnStart) {
-      handlePlay();
-    }
-  }, [])
-
-  React.useEffect(() => {
     if (currentScreen === SCREENS.FIGHT) {
       handlePlay('pause');
     }
 
     if (currentScreen === SCREENS.WIN) {
+      handlePlay('play');
+    }
+
+    if (currentScreen === SCREENS.PLAYERS) {
       handlePlay('play');
     }
   }, [currentScreen])

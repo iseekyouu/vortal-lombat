@@ -4,6 +4,7 @@ export const SCREENS = {
   FIGHT: 1,
   VERSUS: 2,
   WIN: 3,
-  LADDER: 5,
+  DLC: 5,
+  LADDER: 6,
 }
 
