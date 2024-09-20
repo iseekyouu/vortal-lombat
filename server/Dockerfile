@@ -28,8 +28,8 @@ COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/package*.json ./
 COPY --from=build /app/.env ./.env
 
+ENV NODE_ENV=production
 # Expose the port the app runs on
 EXPOSE 3092
-
 # Set the default command to run the app
 CMD ["node", "dist/index.js"]
