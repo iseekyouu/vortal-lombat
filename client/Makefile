@@ -1,5 +1,5 @@
 # Variables
-APP_NAME = vortal-kombat
+APP_NAME = vortal-lombat
 DOCKERFILE = Dockerfile
 PORT = 8081
 
