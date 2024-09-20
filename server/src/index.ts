@@ -2,6 +2,10 @@ require("dotenv").config();
 import express, { Request, Response } from "express";
 import axios from "axios";
 import cors from "cors";
+import { connectDB } from "./db";
+import Ladder from "./models/Ladder";
+
+connectDB();
 
 const askChatGPT = async (message: string) => {
   try {
@@ -9,7 +13,7 @@ const askChatGPT = async (message: string) => {
     const response = await axios.post(
       "https://api.openai.com/v1/chat/completions",
       {
-        model: "gpt-4", // Use the desired model
+        model: "gpt-4o", // Use the desired model
         messages: [{ role: "user", content: message }], // Send user's message to ChatGPT
       },
       {
@@ -70,14 +74,17 @@ type Player = {
 const performRound = async (player1: Player, player2: Player) => {
   const p1evaded = Math.random() * 100 < player1.evasion;
   const p2evaded = Math.random() * 100 < player2.evasion;
-  const p1dmg = p2evaded
+  let p1dmg = p2evaded
     ? 0
     : player1.powerMin +
       Math.floor(Math.random() * (player1.powerMax - player1.powerMin + 1));
-  const p2dmg = p1evaded
+  let p2dmg = p1evaded
     ? 0
     : player2.powerMin +
       Math.floor(Math.random() * (player2.powerMax - player2.powerMin + 1));
+
+  const p1health = player1.health - p2dmg;
+  const p2health = player2.health - p1dmg;
 
   const getRandomItem = (list: string[]) =>
     list[Math.floor(Math.random() * list.length)];
@@ -87,6 +94,12 @@ const performRound = async (player1: Player, player2: Player) => {
 
   const getEvasivePrompt = (name1: string, name2: string, weapon: string) =>
     `Опиши смешно используя 1 короткое предложение. Идет драка, человек по имени ${name1} атакует человека по имени ${name2} используя в качестве оружия ${weapon}, но ${name2} уклоняется и не получает повреждений`;
+
+  const getKillingPrompt = (name1: string, name2: string, weapon: string) =>
+    `Опиши смешно используя 2 короткое предложение. Идет драка, человек по имени ${name1} смертельно атакует человека по имени ${name2} используя в качестве оружия ${weapon}, и ${name2} погибает ужасным образом`;
+
+  const getDyingPrompt = (name1: string, name2: string, weapon: string) =>
+    `Опиши смешно используя 1 короткое предложение. Идет драка, человек по имени ${name1} атакует человека по имени ${name2} используя в качестве оружия ${weapon}, но промахивается`;
 
   let p1prompt = getNormalPrompt(
     player1.name,
@@ -114,6 +127,35 @@ const performRound = async (player1: Player, player2: Player) => {
       player2.name,
       getRandomItem(absurdWeaponsList)
     );
+  }
+
+  if (p1health <= 0) {
+    p1prompt = getDyingPrompt(
+      player2.name,
+      player1.name,
+      getRandomItem(absurdWeaponsList)
+    );
+    p2prompt = getKillingPrompt(
+      player1.name,
+      player2.name,
+      getRandomItem(absurdWeaponsList)
+    );
+    p1dmg = 0;
+  }
+
+  // таким образом первый игрок в приоритете если одновременно получились минусовые хиты у обоих
+  if (p2health <= 0) {
+    p2prompt = getDyingPrompt(
+      player2.name,
+      player1.name,
+      getRandomItem(absurdWeaponsList)
+    );
+    p1prompt = getKillingPrompt(
+      player1.name,
+      player2.name,
+      getRandomItem(absurdWeaponsList)
+    );
+    p2dmg = 0;
   }
 
   console.time("askChatGPT");
@@ -154,6 +196,47 @@ app.post("/api/chat", async (req, res) => {
   const { message } = req.body; // Get the user's message from the request body
 
   return res.json({ response: await askChatGPT(message) });
+});
+
+app.post("/api/ladder/:fighter", async (req, res) => {
+  try {
+    const { fighter } = req.params;
+    const { wins, loses } = req.body;
+
+    const updatedFighter = await Ladder.findOneAndUpdate(
+      { fighter },
+      { wins, loses },
+      { new: true, runValidators: true, upsert: true }
+    );
+
+    if (!updatedFighter) {
+      return res.status(404).json({ message: "Fighter not found" });
+    }
+
+    res.status(200).json(updatedFighter);
+  } catch (error) {
+    res.status(400).json({ message: "Error updating fighter", error });
+  }
+});
+
+app.get("/api/ladder", async (req, res) => {
+  try {
+    const fighters = await Ladder.find().sort({ wins: -1 }); // Sorting by wins in descending order
+    res.status(200).json(fighters);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching ladder", error });
+  }
+});
+
+app.post("/api/ladder-reset", async (req, res) => {
+  try {
+    await Ladder.deleteMany(); // This removes all documents from the Ladder collection
+    res
+      .status(200)
+      .json({ message: "Ladder has been reset, all fighters removed." });
+  } catch (error) {
+    res.status(500).json({ message: "Error resetting the ladder", error });
+  }
 });
 
 // Start the server
