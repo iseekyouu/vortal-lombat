@@ -14,7 +14,7 @@ interface GridItemProps {
 const GridItem: React.FC<GridItemProps> = ({
   fighter, onSelect, isSelected, choosingPlayer2, muted,
  }) => {
-  const { play, audioRef } = useAudio(PlayerSelectionSound, muted);
+  const { play } = useAudio(PlayerSelectionSound, muted);
 
   return (
     <div
@@ -29,9 +29,6 @@ const GridItem: React.FC<GridItemProps> = ({
       <div className="absolute bottom-0 left-0 right-0 bg-red-800 bg-opacity-75 text-center text-yellow-400 font-bold text-xs uppercase tracking-wider py-1">
         <span>{fighter.name}</span>
       </div>
-
-      {/* Audio element for hover sound */}
-      <audio ref={audioRef} src={PlayerSelectionSound} />
     </div>
   );
 };

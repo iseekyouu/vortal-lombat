@@ -165,21 +165,21 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted })
   const [fightFinished, setFightFinished] = React.useState(false);
 
 
-  const { play: playHit1, audioRef: hit1Ref } = useAudio(Hit1, muted);
-  const { play: playHit2, audioRef: hit2Ref } = useAudio(Hit2, muted);
-  const { play: playHit3, audioRef: hit3Ref } = useAudio(Hit3, muted);
-  const { play: playHit4, audioRef: hit4Ref } = useAudio(Hit4, muted);
-  const { play: playHit5, audioRef: hit5Ref } = useAudio(Hit5, muted);
-  const { play: playRoundAnnounce, audioRef: roundAnnounceRef } = useAudio(RoundAnnounce, muted);
-  const { play: playEasterEgg, audioRef: EasterEggSoundRef } = useAudio(EasterEggSound, muted);
-  const { play: playFinishHim, audioRef: finishHimRef } = useAudio(FinishHimSound, muted);
+  const { play: playHit1 } = useAudio(Hit1, muted);
+  const { play: playHit2 } = useAudio(Hit2, muted);
+  const { play: playHit3} = useAudio(Hit3, muted);
+  const { play: playHit4 } = useAudio(Hit4, muted);
+  const { play: playHit5 } = useAudio(Hit5, muted);
+  const { play: playRoundAnnounce } = useAudio(RoundAnnounce, muted);
+  const { play: playEasterEgg } = useAudio(EasterEggSound, muted);
+  const { play: playFinishHim } = useAudio(FinishHimSound, muted);
 
   const hitSounds = [
-    { play: playHit1, audioRef: hit1Ref },
-    { play: playHit2, audioRef: hit2Ref },
-    { play: playHit3, audioRef: hit3Ref },
-    { play: playHit4, audioRef: hit4Ref },
-    { play: playHit5, audioRef: hit5Ref },
+    { play: playHit1 },
+    { play: playHit2 },
+    { play: playHit3 },
+    { play: playHit4 },
+    { play: playHit5 },
   ];
 
   const handleRound = useCallback(async () => {
@@ -251,14 +251,6 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted })
         <PlayerSheet player={player2} />
       </div>
       <div className='mb-15'>{fightFinished && <FinishHimButton onClick={finishHim} />}</div>
-      <audio ref={hit1Ref} src={Hit1} />
-      <audio ref={hit2Ref} src={Hit2} />
-      <audio ref={hit3Ref} src={Hit3} />
-      <audio ref={hit4Ref} src={Hit4} />
-      <audio ref={hit5Ref} src={Hit5} />
-      <audio ref={roundAnnounceRef} src={RoundAnnounce} />
-      <audio ref={EasterEggSoundRef} src={EasterEggSound} />
-      <audio ref={finishHimRef} src={FinishHimSound} />
 
     </div>
   );
