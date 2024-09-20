@@ -59,7 +59,7 @@ type FighterType = {
 const fightersRaw: FighterType[] = [
   { avatar: Chekushkin, name: "uncle jenya", evasion: 80, powerMax: 15, health: 50, winSound: uncleJenyaWinSound }, // Lower evasion, higher max power
   { avatar: Gabriel, name: "gabriel", evasion: 16, powerMin: 7, winSound: gabrialWinSound }, // Slightly better evasion and powerMin
-  { avatar: Galashichev, name: "tra-ta-ta-ta-ta", powerMax: 25, evasion: 13, winSound: traTaTaTaWinSound }, // Higher powerMax, slightly less evasion
+  { avatar: Galashichev, name: "tra-ta-ta-ta-ta", powerMax: 25, powerMin: 30, evasion: 3, winSound: traTaTaTaWinSound }, // Higher powerMax, slightly less evasion
   { avatar: Jidkevich, name: "liquidman", health: 90, evasion: 18, winSound: liquidmanWinSound }, // Lower health, better evasion
   { avatar: Karbushev, name: "beast", health: 120, evasion: 10, winSound: beastWinSound }, // Higher health, lower evasion (tougher but easier to hit)
   { avatar: Konkin, name: "andrew", evasion: 17, winSound: andrewWinSound }, // Balanced
@@ -69,7 +69,7 @@ const fightersRaw: FighterType[] = [
   { avatar: Panov, name: "pawervova", health: 110, winSound: pawervovaWinSound }, // Slightly more health
   { avatar: Ponomarenko, name: "shao khivan", health: 1000, powerMin: 15, powerMax: 35, evasion: 99, winSound: shaoKhivanWinSound }, // Boss-level stats
   { avatar: Roshupkin, name: "rookie", health: 90, evasion: 16, winSound: rookieWinSound }, // Slightly weaker health, good evasion
-  { avatar: Seregin, name: "the brain", powerMin: 8, evasion: 17, winSound: theBrainWinSound }, // Higher powerMin, good evasion
+  { avatar: Seregin, name: "the brain", powerMin: 8, evasion: 27, winSound: theBrainWinSound }, // Higher powerMin, good evasion
   { avatar: Siratov, name: "viktor strong", health: 120, evasion: 12, winSound: viktorStrongWinSound }, // Stronger health, decent evasion
   { avatar: Surodina, name: "heavy mac", health: 160, powerMax: 3, powerMin: 1, winSound: heavyMacWinSound }, // Higher health, slightly lower max power
   { avatar: Trofimenko, name: "alehandro", powerMin: 7, evasion: 14, winSound: alehandroWinSound }, // Balanced
@@ -79,7 +79,7 @@ const fightersRaw: FighterType[] = [
   { avatar: Borodin, name: "big boom", powerMax: 28, evasion: 8, winSound: bigBoomWinSound }, // High max power, lower evasion
   { avatar: Botov, name: "special forces", powerMin: 1, powerMax: 333, evasion: 0, health: 33, winSound: specialForcesWinSound }, // Balanced, slight tweak in powerMin
   { avatar: Bushin, name: "vecherniy", health: 105, evasion: 14, winSound: vecherniyWinSound }, // Slightly more health
-  { avatar: Bahurinskiy, name: "low hp", health: 75, evasion: 20, winSound: lowHpWinSound }, // Low health, very high evasion
+  { avatar: Bahurinskiy, name: "low hp", health: 10, evasion: 85, winSound: lowHpWinSound }, // Low health, very high evasion
   { avatar: Gunbin, name: "astronaut", powerMax: 23, evasion: 13 }, // Balanced
   { avatar: Melnikov, name: "sub marine", powerMin: 6, evasion: 14 }, // Balanced
 ];
