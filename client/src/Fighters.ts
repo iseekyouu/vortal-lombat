@@ -22,6 +22,9 @@ import Borodin from "./avatars/borodin.png";
 import Botov from "./avatars/botov.png";
 import Bushin from "./avatars/bushin.png";
 import Bahurinskiy from "./avatars/bahurinskiy.png";
+import Gunbin from "./avatars/gunbin.png";
+import Melnikov from './avatars/melnikov.png'
+
 
 import uncleJenyaWinSound from './audio/wins/uncle_jenya.m4a'
 import andrewWinSound from './audio/wins/andrew.m4a'
@@ -77,6 +80,8 @@ const fightersRaw: FighterType[]  = [
   { avatar: Botov, name: "special forces", winSound: specialForcesWinSound },
   { avatar: Bushin, name: "vecherniy", winSound: vecherniyWinSound },
   { avatar: Bahurinskiy, name: "low hp", winSound: lowHpWinSound },
+  { avatar: Gunbin, name: "astronaut" },
+  { avatar: Melnikov, name: "sub marine" },
 ];
 
 export default fightersRaw.map(
