@@ -67,7 +67,7 @@ const fightersRaw: FighterType[] = [
   { avatar: Kuzakov, name: "bali boy", powerMin: 6, evasion: 12, winSound: baliBoyWinSound }, // Balanced, slight tweak in powerMin
   { avatar: Novoselov, name: "mozeratty", powerMax: 23, evasion: 14, winSound: mozerattyWinSound }, // Higher powerMax
   { avatar: Panov, name: "pawervova", health: 110, winSound: pawervovaWinSound }, // Slightly more health
-  { avatar: Ponomarenko, name: "shao khivan", health: 1000, powerMin: 15, powerMax: 35, evasion: 8, winSound: shaoKhivanWinSound }, // Boss-level stats
+  { avatar: Ponomarenko, name: "shao khivan", health: 1000, powerMin: 15, powerMax: 35, evasion: 99, winSound: shaoKhivanWinSound }, // Boss-level stats
   { avatar: Roshupkin, name: "rookie", health: 90, evasion: 16, winSound: rookieWinSound }, // Slightly weaker health, good evasion
   { avatar: Seregin, name: "the brain", powerMin: 8, evasion: 17, winSound: theBrainWinSound }, // Higher powerMin, good evasion
   { avatar: Siratov, name: "viktor strong", health: 120, evasion: 12, winSound: viktorStrongWinSound }, // Stronger health, decent evasion

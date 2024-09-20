@@ -29,7 +29,7 @@ const StartScreen: React.FC<{
 
       {/* Title */}
       <h1 className="text-6xl font-bold text-red-600 uppercase mb-8">
-        Vortal Lombat 0.0.2
+        Vortal Lombat 1.0.3
       </h1>
 
       <div className="text-yellow-400 text-4xl animate-pulse flex content-center flex-col">
