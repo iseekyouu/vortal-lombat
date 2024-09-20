@@ -10,7 +10,7 @@ services:
       - mongo-data:/data/db
     restart: always
     networks:
-      - mongo-network  # Use the custom network
+      - vlombat-network  # Use the custom network
 
 volumes:
   mongo-data:
