@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import VLogo from "./vlombat-logo.webp";
+import DLCPageIcon from './DlcPageIcon';
 
-const StartScreen: React.FC<{ onStart: (muted?: boolean) => void }> = ({ onStart }) => {
+const StartScreen: React.FC<{
+  onStart: (muted?: boolean) => void,
+  onDlcClick: () => void,
+}> = ({ onStart, onDlcClick }) => {
   // Listen for the "Enter" key press
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -29,7 +33,7 @@ const StartScreen: React.FC<{ onStart: (muted?: boolean) => void }> = ({ onStart
       </h1>
 
       <div className="text-yellow-400 text-4xl animate-pulse flex content-center flex-col">
-        Press any key to contine
+        Press any key to continue
         {/* Button with the MK3 style */}
       </div>
 
@@ -45,6 +49,8 @@ const StartScreen: React.FC<{ onStart: (muted?: boolean) => void }> = ({ onStart
           >
             Start in muted mode
           </button>
+        <br />
+        <DLCPageIcon onClick={onDlcClick} />
       </div>
   );
 };
