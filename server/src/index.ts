@@ -71,100 +71,115 @@ type Player = {
   evasion: number;
 };
 
+const getRandomItem = (list: string[]) =>
+  list[Math.floor(Math.random() * list.length)];
+
+const getNormalPrompt = (name1: string, name2: string, weapon: string) =>
+  `Опиши смешно используя 1 короткое предложение. Идет драка, человек по имени ${name1} атакует человека по имени ${name2} используя в качестве оружия ${weapon}. ${name2} получает серьезные повреждения`;
+
+const getHitEvasionPrompt = (name1: string, name2: string, weapon: string) =>
+  `Опиши смешно используя 1 короткое предложение. Идет драка, человек по имени ${name1} атакует человека по имени ${name2} используя в качестве оружия ${weapon}, но ${name2} уклоняется и не получает повреждений`;
+
+const getKillingPrompt = (name1: string, name2: string, weapon: string) =>
+  `Опиши смешно используя 2 короткое предложение. Идет драка, человек по имени ${name1} смертельно атакует человека по имени ${name2} используя в качестве оружия ${weapon}, и ${name2} погибает ужасным образом`;
+
+const getDyingPrompt = (name1: string, name2: string, weapon: string) =>
+  `Опиши смешно используя 1 короткое предложение. Идет драка, человек по имени ${name1} атакует человека по имени ${name2} используя в качестве оружия ${weapon}, но промахивается`;
+
 const performRound = async (player1: Player, player2: Player) => {
-  const p1evaded = Math.random() * 100 < player1.evasion;
+  let p1text;
+  let p2text;
+
   const p2evaded = Math.random() * 100 < player2.evasion;
   let p1dmg = p2evaded
     ? 0
     : player1.powerMin +
       Math.floor(Math.random() * (player1.powerMax - player1.powerMin + 1));
-  let p2dmg = p1evaded
+
+  if (p1dmg === 0) {
+    // промахнулся
+    p1text = await askChatGPT(
+      getHitEvasionPrompt(
+        player1.name,
+        player2.name,
+        getRandomItem(absurdWeaponsList)
+      )
+    );
+  } else {
+    // тогда вычитаем урон из хп
+    const p2health = player2.health - p1dmg;
+    // погиб и ходить не будет
+    if (p2health <= 0) {
+      return {
+        p1dmg,
+        p2dmg: 0,
+        p1text: await askChatGPT(
+          getKillingPrompt(
+            player1.name,
+            player2.name,
+            getRandomItem(absurdWeaponsList)
+          )
+        ),
+        p2text: "",
+      };
+    } else {
+      // не погиб а просто подамажился
+      p1text = await askChatGPT(
+        getNormalPrompt(
+          player1.name,
+          player2.name,
+          getRandomItem(absurdWeaponsList)
+        )
+      );
+    }
+  }
+
+  // если мы дошли до сюда, то второй игрок еще жив, а текст первого готов и лежит в p1text
+  const p1evaded = Math.random() * 100 < player1.evasion;
+  const p2dmg = p1evaded
     ? 0
     : player2.powerMin +
       Math.floor(Math.random() * (player2.powerMax - player2.powerMin + 1));
 
-  const p1health = player1.health - p2dmg;
-  const p2health = player2.health - p1dmg;
-
-  const getRandomItem = (list: string[]) =>
-    list[Math.floor(Math.random() * list.length)];
-
-  const getNormalPrompt = (name1: string, name2: string, weapon: string) =>
-    `Опиши смешно используя 1 короткое предложение. Идет драка, человек по имени ${name1} атакует человека по имени ${name2} используя в качестве оружия ${weapon}. ${name2} получает серьезные повреждения`;
-
-  const getEvasivePrompt = (name1: string, name2: string, weapon: string) =>
-    `Опиши смешно используя 1 короткое предложение. Идет драка, человек по имени ${name1} атакует человека по имени ${name2} используя в качестве оружия ${weapon}, но ${name2} уклоняется и не получает повреждений`;
-
-  const getKillingPrompt = (name1: string, name2: string, weapon: string) =>
-    `Опиши смешно используя 2 короткое предложение. Идет драка, человек по имени ${name1} смертельно атакует человека по имени ${name2} используя в качестве оружия ${weapon}, и ${name2} погибает ужасным образом`;
-
-  const getDyingPrompt = (name1: string, name2: string, weapon: string) =>
-    `Опиши смешно используя 1 короткое предложение. Идет драка, человек по имени ${name1} атакует человека по имени ${name2} используя в качестве оружия ${weapon}, но промахивается`;
-
-  let p1prompt = getNormalPrompt(
-    player1.name,
-    player2.name,
-    getRandomItem(absurdWeaponsList)
-  );
-
-  let p2prompt = getNormalPrompt(
-    player2.name,
-    player1.name,
-    getRandomItem(absurdWeaponsList)
-  );
-
-  if (p1evaded) {
-    p2prompt = getEvasivePrompt(
-      player2.name,
-      player1.name,
-      getRandomItem(absurdWeaponsList)
+  if (p2dmg === 0) {
+    // промахнулся
+    p2text = await askChatGPT(
+      getHitEvasionPrompt(
+        player2.name,
+        player1.name,
+        getRandomItem(absurdWeaponsList)
+      )
     );
+  } else {
+    // тогда вычитаем урон из хп
+    const p1health = player1.health - p2dmg;
+    // погиб, всё уже посчитано
+    if (p1health <= 0) {
+      return {
+        p1dmg,
+        p2dmg,
+        p1text,
+        p2text: await askChatGPT(
+          getKillingPrompt(
+            player2.name,
+            player1.name,
+            getRandomItem(absurdWeaponsList)
+          )
+        ),
+      };
+    } else {
+      // не погиб а просто подамажился
+      p2text = await askChatGPT(
+        getNormalPrompt(
+          player2.name,
+          player1.name,
+          getRandomItem(absurdWeaponsList)
+        )
+      );
+    }
   }
 
-  if (p2evaded) {
-    p1prompt = getEvasivePrompt(
-      player1.name,
-      player2.name,
-      getRandomItem(absurdWeaponsList)
-    );
-  }
-
-  if (p1health <= 0) {
-    p1prompt = getDyingPrompt(
-      player2.name,
-      player1.name,
-      getRandomItem(absurdWeaponsList)
-    );
-    p2prompt = getKillingPrompt(
-      player1.name,
-      player2.name,
-      getRandomItem(absurdWeaponsList)
-    );
-    p1dmg = 0;
-  }
-
-  // таким образом первый игрок в приоритете если одновременно получились минусовые хиты у обоих
-  if (p2health <= 0) {
-    p2prompt = getDyingPrompt(
-      player2.name,
-      player1.name,
-      getRandomItem(absurdWeaponsList)
-    );
-    p1prompt = getKillingPrompt(
-      player1.name,
-      player2.name,
-      getRandomItem(absurdWeaponsList)
-    );
-    p2dmg = 0;
-  }
-
-  console.time("askChatGPT");
-  const [p1text, p2text] = await Promise.all([
-    askChatGPT(p1prompt),
-    askChatGPT(p2prompt),
-  ]);
-  console.timeEnd("askChatGPT");
-
+  // оба живы, весь текст и дамаг посчитан
   return { p1dmg, p2dmg, p1text, p2text };
 };
 
