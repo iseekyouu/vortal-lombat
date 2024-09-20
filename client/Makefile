@@ -9,7 +9,7 @@ build:
 
 # Run the Docker container
 run:
-	docker run -p $(PORT):80 $(APP_NAME)
+	docker run -d -p $(PORT):80 $(APP_NAME)
 
 # Stop and remove the running container
 stop:
