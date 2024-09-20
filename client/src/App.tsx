@@ -33,7 +33,7 @@ const MainLayout: React.FC<{
 function App() {
   const [selectedFighter, setSelectedFighter] = React.useState<Fighter | null>(Fighters[0]);
   const [hideFighters, setHideFighters] = React.useState(false);
-  const [currentScreen, setCurrentScreen] = React.useState(SCREENS.START);
+  const [currentScreen, setCurrentScreen] = React.useState(SCREENS.FIGHT);
   const [player2, setPlayer2] = React.useState<Fighter>(Fighters[1]);
   const [winner, setWinner] = React.useState<Fighter>(Fighters[0]);
   const [muted, setMuted] = React.useState(false);

@@ -17,7 +17,6 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSrc, playOnStart, curren
     if (audioRef.current) {
       if (pause) {
         // Fade out the audio before pausing
-        const fadeOutDuration = 1000; // 1 second fade-out
         const fadeStep = 0.05; // Step by which the volume will decrease
         const fadeInterval = 50; // Interval for decreasing volume in milliseconds
 

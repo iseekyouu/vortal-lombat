@@ -7,6 +7,8 @@ import Hit3 from './audio/hit_3.mp3';
 import Hit4 from './audio/hit_4.mp3';
 import Hit5 from './audio/hit_5.mp3';
 import useAudio from './useAudio';
+import RoundAnnounce from './audio/round_announce.mp3';
+import EasterEggSound from './audio/easter_egg_1.mp3';
 
 type ResponseFight = {
   p1dmg: string;
@@ -167,6 +169,8 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted })
   const { play: playHit3, audioRef: hit3Ref } = useAudio(Hit3, muted);
   const { play: playHit4, audioRef: hit4Ref } = useAudio(Hit4, muted);
   const { play: playHit5, audioRef: hit5Ref } = useAudio(Hit5, muted);
+  const { play: playRoundAnnounce, audioRef: roundAnnounceRef } = useAudio(RoundAnnounce, muted);
+  const { play: playEasterEgg, audioRef: EasterEggSoundRef } = useAudio(EasterEggSound, muted);
 
   const hitSounds = [
     { play: playHit1, audioRef: hit1Ref },
@@ -194,9 +198,15 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted })
 
     player1.health -= parseInt(result.p2dmg);
 
-    hitSounds[hitIndex].play();
+
     player2.health -= parseInt(result.p1dmg);
-    hitSounds[hitIndex].play();
+
+    const randomChance = Math.floor(Math.random() * 100) + 1;
+    if (randomChance <= 5) {
+      playEasterEgg(); // Call the Easter Egg function with 5% probability
+    } else {
+      hitSounds[hitIndex].play();
+    }
 
     if (player1.health <= 0 || player2.health <= 0) {
       setFightFinished(true);
@@ -222,6 +232,10 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted })
     }
   }, [isLoading, handleRound, fightFinished]);
 
+  React.useEffect(() => {
+    playRoundAnnounce();
+  }, [])
+
   return (
     <div className="flex flex-col items-center bg-black text-white min-h-screen">
       <h1 className="text-red-600 text-5xl font-bold uppercase mb-6 animate-pulse">
@@ -241,6 +255,8 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted })
       <audio ref={hit3Ref} src={Hit3} />
       <audio ref={hit4Ref} src={Hit4} />
       <audio ref={hit5Ref} src={Hit5} />
+      <audio ref={roundAnnounceRef} src={RoundAnnounce} />
+      <audio ref={EasterEggSoundRef} src={EasterEggSound} />
 
     </div>
   );
