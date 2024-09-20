@@ -1,6 +1,12 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import Fighter from "./Fighter";
 import Emblem2 from "./gifs/emblem_2.gif";
+import Hit1 from './audio/hit_1.mp3';
+import Hit2 from './audio/hit_2.mp3';
+import Hit3 from './audio/hit_3.mp3';
+import Hit4 from './audio/hit_4.mp3';
+import Hit5 from './audio/hit_5.mp3';
+import useAudio from './useAudio';
 
 type ResponseFight = {
   p1dmg: string;
@@ -13,6 +19,7 @@ interface FightProps {
   player1: Fighter;
   player2: Fighter;
   onFightFinish: (winner: Fighter) => void;
+  muted?: boolean;
 }
 
 // Player Sheet styled like MK3's player stats panel
@@ -149,12 +156,29 @@ const FinishHimButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
 };
 
 // Main Fight component styled like MK3
-const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish }) => {
+const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted }) => {
   const [combatLog, setCombatLog] = React.useState<ResponseFight[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [fightFinished, setFightFinished] = React.useState(false);
 
+
+  const { play: playHit1, audioRef: hit1Ref } = useAudio(Hit1, muted);
+  const { play: playHit2, audioRef: hit2Ref } = useAudio(Hit2, muted);
+  const { play: playHit3, audioRef: hit3Ref } = useAudio(Hit3, muted);
+  const { play: playHit4, audioRef: hit4Ref } = useAudio(Hit4, muted);
+  const { play: playHit5, audioRef: hit5Ref } = useAudio(Hit5, muted);
+
+  const hitSounds = [
+    { play: playHit1, audioRef: hit1Ref },
+    { play: playHit2, audioRef: hit2Ref },
+    { play: playHit3, audioRef: hit3Ref },
+    { play: playHit4, audioRef: hit4Ref },
+    { play: playHit5, audioRef: hit5Ref },
+  ];
+
   const handleRound = useCallback(async () => {
+    const hitIndex = Math.floor(Math.random() * hitSounds.length);
+
     setIsLoading(true);
     const apiUrl = process.env.NODE_ENV === 'production' ? 'https://vlombat.vlprojects.pro/api' : 'http://localhost:3092/api';
     const response = await fetch(`${apiUrl}/fight`, {
@@ -169,7 +193,11 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish }) => {
     setCombatLog([...combatLog, result]);
 
     player1.health -= parseInt(result.p2dmg);
+    console.log({ s: hitSounds[hitIndex] });
+
+    hitSounds[hitIndex].play();
     player2.health -= parseInt(result.p1dmg);
+    hitSounds[hitIndex].play();
 
     if (player1.health <= 0 || player2.health <= 0) {
       setFightFinished(true);
@@ -209,6 +237,12 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish }) => {
         <PlayerSheet player={player2} />
       </div>
       <div className='mb-15'>{fightFinished && <FinishHimButton onClick={finishHim} />}</div>
+      <audio ref={hit1Ref} src={Hit1} />
+      <audio ref={hit2Ref} src={Hit2} />
+      <audio ref={hit3Ref} src={Hit3} />
+      <audio ref={hit4Ref} src={Hit4} />
+      <audio ref={hit5Ref} src={Hit5} />
+
     </div>
   );
 };
