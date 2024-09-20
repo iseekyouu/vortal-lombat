@@ -8,8 +8,14 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
-    restart: always # Ensures the container restarts if it stops or the server reboots
+    restart: always
+    networks:
+      - mongo-network  # Use the custom network
 
 volumes:
   mongo-data:
     driver: local
+
+networks:
+  vlombat-network:  # Define the custom network
+    external: true  # Indicates this network is managed outside of this compose file

@@ -9,7 +9,7 @@ build:
 
 # Run the Docker container
 run:
-	docker run -d -p $(PORT):3092 --name $(APP_NAME) $(APP_NAME)
+	docker run -d --network vlombat-network -p $(PORT):3092 --name $(APP_NAME) $(APP_NAME)
 
 # Stop and remove the running container
 stop:
