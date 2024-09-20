@@ -156,7 +156,8 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish }) => {
 
   const handleRound = useCallback(async () => {
     setIsLoading(true);
-    const response = await fetch("http://localhost:3092/fight", {
+    const apiUrl = process.env.NODE_ENV === 'production' ? 'https://vlombat.vlprojects.pro/api' : 'http://localhost:3092';
+    const response = await fetch(`${apiUrl}/fight`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
