@@ -77,7 +77,7 @@ const fightersRaw: FighterType[] = [
   { avatar: Chaykin, name: "mister bkk", evasion: 20, health: 85, winSound: misterBkkWinSound }, // High evasion, slightly lower health
   { avatar: Antipin, name: "bear dance", health: 130, evasion: 10, winSound: bearDanceWinSound }, // High health, low evasion (tank-like)
   { avatar: Borodin, name: "big boom", powerMax: 28, evasion: 8, winSound: bigBoomWinSound }, // High max power, lower evasion
-  { avatar: Botov, name: "special forces", powerMin: 1, powerMax: 50, evasion: 10, health: 50, winSound: specialForcesWinSound }, // Balanced, slight tweak in powerMin
+  { avatar: Botov, name: "special forces", powerMin: 1, powerMax: 50, evasion: 1, health: 37, winSound: specialForcesWinSound }, // Balanced, slight tweak in powerMin
   { avatar: Bushin, name: "vecherniy", health: 105, evasion: 14, winSound: vecherniyWinSound }, // Slightly more health
   { avatar: Bahurinskiy, name: "low hp", health: 10, evasion: 85, winSound: lowHpWinSound }, // Low health, very high evasion
   { avatar: Gunbin, name: "astronaut", powerMax: 23, evasion: 13 }, // Balanced
