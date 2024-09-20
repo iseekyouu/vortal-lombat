@@ -9,7 +9,7 @@ build:
 
 # Run the Docker container
 run:
-	docker run -d -p $(PORT):80 $(APP_NAME)
+	docker run -d -p $(PORT):80 --name $(APP_NAME) $(APP_NAME)
 
 # Stop and remove the running container
 stop:
@@ -22,7 +22,7 @@ clean:
 	docker rmi $(APP_NAME) || true
 
 # Build and run the container
-up: build run
+up: stop build run
 
 # Stop, clean, build, and run
 rebuild: stop clean up
