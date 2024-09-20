@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import Fighter from "./Fighter";
 import Emblem2 from "./gifs/emblem_2.gif";
-import Hit1 from './audio/hit_1.mp3';
-import Hit2 from './audio/hit_2.mp3';
-import Hit3 from './audio/hit_3.mp3';
-import Hit4 from './audio/hit_4.mp3';
-import Hit5 from './audio/hit_5.mp3';
-import useAudio from './useAudio';
-import RoundAnnounce from './audio/round_announce.mp3';
-import EasterEggSound from './audio/easter_egg_1.mp3';
-import FinishHimSound from './audio/finish_fim.mp3';
-import HealthBar from './HealthBar';
-import FightTimer from './FightTimer';
+import Hit1 from "./audio/hit_1.mp3";
+import Hit2 from "./audio/hit_2.mp3";
+import Hit3 from "./audio/hit_3.mp3";
+import Hit4 from "./audio/hit_4.mp3";
+import Hit5 from "./audio/hit_5.mp3";
+import useAudio from "./useAudio";
+import RoundAnnounce from "./audio/round_announce.mp3";
+import EasterEggSound from "./audio/easter_egg_1.mp3";
+import FinishHimSound from "./audio/finish_fim.mp3";
+import HealthBar from "./HealthBar";
+import FightTimer from "./FightTimer";
 
 type ResponseFight = {
   p1dmg: string;
@@ -93,23 +93,34 @@ const CombatLog: React.FC<{ rounds: ResponseFight[]; isLoading: boolean }> = ({
 
         return (
           <div key={index} className="mb-4 text-lg">
-            <p>
-              <span className="text-blue-400">{entry.p1text}</span>
-              <span className="ml-2 text-red-400 font-bold ">{p1dmgText}</span>
-            </p>
-            <p>
-              <span className="text-green-400">{entry.p2text}</span>
-              <span className="ml-2 text-red-400 font-bold ">{p2dmgText}</span>
-            </p>
+            {entry.p1text && (
+              <p>
+                <span className="text-blue-400">{entry.p1text}</span>
+                <span className="ml-2 text-red-400 font-bold ">
+                  {p1dmgText}
+                </span>
+              </p>
+            )}
+
+            {entry.p2text && (
+              <p>
+                <span className="text-green-400">{entry.p2text}</span>
+                <span className="ml-2 text-red-400 font-bold ">
+                  {p2dmgText}
+                </span>
+              </p>
+            )}
           </div>
         );
       })}
 
       {/* Typing Loader */}
       {isLoading && (
-        <div className={`flex justify-center
+        <div
+          className={`flex justify-center
         ml-2 ${isScrollVisible ? "" : "mr-2"}
-        `}>
+        `}
+        >
           <img src={Emblem2} alt="Loading..." className="w-12 h-12" />
         </div>
       )}
@@ -161,9 +172,14 @@ const FinishHimButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   );
 };
 
-
 // Main Fight component styled like MK3
-const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted, fightReason }) => {
+const Fight: React.FC<FightProps> = ({
+  player1,
+  player2,
+  onFightFinish,
+  muted,
+  fightReason,
+}) => {
   const [combatLog, setCombatLog] = React.useState<ResponseFight[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [fightFinished, setFightFinished] = React.useState(false);
@@ -172,7 +188,7 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted, f
 
   const { play: playHit1 } = useAudio(Hit1, muted);
   const { play: playHit2 } = useAudio(Hit2, muted);
-  const { play: playHit3} = useAudio(Hit3, muted);
+  const { play: playHit3 } = useAudio(Hit3, muted);
   const { play: playHit4 } = useAudio(Hit4, muted);
   const { play: playHit5 } = useAudio(Hit5, muted);
   const { play: playRoundAnnounce } = useAudio(RoundAnnounce, muted);
@@ -187,12 +203,14 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted, f
     { play: playHit5 },
   ];
 
-
   const handleRound = useCallback(async () => {
     const hitIndex = Math.floor(Math.random() * hitSounds.length);
 
     setIsLoading(true);
-    const apiUrl = process.env.NODE_ENV === 'production' ? 'https://vlombat.vlprojects.pro/api' : 'http://localhost:3092/api';
+    const apiUrl =
+      process.env.NODE_ENV === "production"
+        ? "https://vlombat.vlprojects.pro/api"
+        : "http://localhost:3092/api";
     const response = await fetch(`${apiUrl}/fight`, {
       method: "POST",
       headers: {
@@ -241,7 +259,7 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted, f
 
   React.useEffect(() => {
     playRoundAnnounce();
-  }, [])
+  }, []);
 
   return (
     <div className="flex flex-col items-center bg-black text-white min-h-screen">
@@ -252,7 +270,11 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted, f
       <div className="flex justify-between w-full max-w-6xl min-w-[98%] align-top">
         {/* Health bar for Player 1 */}
         <div className="flex-1">
-          <HealthBar health={player1.health} maxHealth={player1MaxHealth} name={player1.name} />
+          <HealthBar
+            health={player1.health}
+            maxHealth={player1MaxHealth}
+            name={player1.name}
+          />
         </div>
 
         {/* Timer in the middle */}
@@ -260,7 +282,12 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted, f
 
         {/* Health bar for Player 2 (reversed) */}
         <div className="flex-1">
-          <HealthBar health={player2.health} maxHealth={player2MaxHealth} reversed name={player2.name}/>
+          <HealthBar
+            health={player2.health}
+            maxHealth={player2MaxHealth}
+            reversed
+            name={player2.name}
+          />
         </div>
       </div>
 
@@ -271,8 +298,9 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted, f
         </div>
         <PlayerSheet player={player2} />
       </div>
-      <div className='mb-15'>{fightFinished && <FinishHimButton onClick={finishHim} />}</div>
-
+      <div className="mb-15">
+        {fightFinished && <FinishHimButton onClick={finishHim} />}
+      </div>
     </div>
   );
 };
