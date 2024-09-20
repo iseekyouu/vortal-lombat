@@ -21,6 +21,7 @@ import Antipin from "./avatars/antipin.png";
 import Borodin from "./avatars/borodin.png";
 import Botov from "./avatars/botov.png";
 import Bushin from "./avatars/bushin.png";
+import Bahurinskiy from "./avatars/bahurinskiy.png";
 
 const fightersRaw = [
   { avatar: Chekushkin, name: "uncle jenya", evasion: 99 },
@@ -45,6 +46,7 @@ const fightersRaw = [
   { avatar: Borodin, name: "big boom" },
   { avatar: Botov, name: "special forces" },
   { avatar: Bushin, name: "vecherniy" },
+  { avatar: Bahurinskiy, name: "low hp" },
 ];
 
 export default fightersRaw.map(
