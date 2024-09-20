@@ -38,7 +38,7 @@ function App() {
     Fighters[0]
   );
   const [hideFighters, setHideFighters] = React.useState(false);
-  const [currentScreen, setCurrentScreen] = React.useState(SCREENS.LADDER);
+  const [currentScreen, setCurrentScreen] = React.useState(SCREENS.START);
   const [player2, setPlayer2] = React.useState<Fighter>(Fighters[1]);
   const [winner, setWinner] = React.useState<Fighter>(Fighters[0]);
   const [muted, setMuted] = React.useState(false);
