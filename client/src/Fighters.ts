@@ -23,7 +23,12 @@ import Botov from "./avatars/botov.png";
 import Bushin from "./avatars/bushin.png";
 import Bahurinskiy from "./avatars/bahurinskiy.png";
 
-const fightersRaw = [
+type FighterType = {
+  name: string;
+  avatar: string;
+} & Partial<Omit<Fighter, 'name' | 'avatar'>>;
+
+const fightersRaw: FighterType[]  = [
   { avatar: Chekushkin, name: "uncle jenya", evasion: 99 },
   { avatar: Gabriel, name: "gabriel" },
   { avatar: Galashichev, name: "tra-ta-ta-ta-ta" },
@@ -34,7 +39,7 @@ const fightersRaw = [
   { avatar: Kuzakov, name: "bali boy" },
   { avatar: Novoselov, name: "mozeratty" },
   { avatar: Panov, name: "pawervova" },
-  { avatar: Ponomarenko, name: "shao khivan" },
+  { avatar: Ponomarenko, name: "shao khivan", health: 1000 },
   { avatar: Roshupkin, name: "rookie" },
   { avatar: Seregin, name: "the brain" },
   { avatar: Siratov, name: "viktor strong" },
@@ -53,6 +58,7 @@ export default fightersRaw.map(
   (fighter, index) =>
     new Fighter(index, fighter.name, fighter.avatar, {
       evasion: fighter.evasion,
+      health: fighter.health,
     })
 );
 
