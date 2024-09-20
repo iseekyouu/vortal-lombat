@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import VLogo from "./vlombat-logo.webp";
 
 const StartScreen: React.FC<{ onStart: (muted?: boolean) => void }> = ({ onStart }) => {
   const [showMessage, setShowMessage] = useState(true);
@@ -21,7 +22,10 @@ const StartScreen: React.FC<{ onStart: (muted?: boolean) => void }> = ({ onStart
   }, [onStart]);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-black text-white">
+    <div className="flex flex-col items-center justify-center h-screen bg-[#181922] text-white">
+      <img src={VLogo} alt="Vortal Lombat" className="w-96 h-96" />
+
+      {/* Title */}
       <h1 className="text-6xl font-bold text-red-600 uppercase mb-8">
         Vortal Lombat 0.0.2
       </h1>
