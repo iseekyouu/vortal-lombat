@@ -14,6 +14,9 @@ import Brutality2 from './gifs/brutality_2.gif';
 import Fatality1 from './gifs/fatality_1.gif';
 import Fatality2 from './gifs/fatality_2.gif';
 import Fatality3 from './gifs/fatality_3.gif'
+import useAudio from './useAudio';
+import Wins from './audio/wins/wins.m4a';
+import UncleJenya from './audio/wins/unclejenya.m4a';
 
 
 const winBackgroundArray = [
@@ -62,7 +65,7 @@ const WinText: React.FC<{}> = () => {
   if (wordIndex === 3) {
     return (
       <div className="text-center mt-8">
-        <div className="flex justify-center mt-4 space-x-2 animate-bounce">
+        <div className="flex justify-center mt-4 space-x-2 animate-bounce  bg-gray-800 rounded-2xl p-4">
           {winWordArray[wordIndex].split('').map((letter, index) => (
             <span
               key={index}
@@ -92,10 +95,10 @@ const WinText: React.FC<{}> = () => {
 
   return (
     <div className="text-center mt-8">
-    <div className="text-red-600 text-7xl font-bold uppercase animate-bounce">
+    <div className="text-red-600 text-7xl font-bold uppercase animate-bounce  bg-gray-800 rounded-2xl p-4">
       Flawless Victory!
     </div>
-    <div className="text-red-500 text-5xl font-bold mt-4 animate-pulse">
+    <div className="text-red-500 text-5xl font-bold mt-4 animate-pulse  bg-gray-800 rounded-2xl p-4">
       {winWordArray[wordIndex]}
     </div>
     <div className="mt-6 flex justify-center">
@@ -111,6 +114,11 @@ const WinText: React.FC<{}> = () => {
 
 const WinnerScreen: React.FC<WinPageProps> = ({ winner }) => {
   const backgroundIndex = Math.floor(Math.random() * winBackgroundArray.length);
+  const { play: play1 } = useAudio(Wins, false);
+
+  React.useEffect(() => {
+    play1();
+  }, [play1]); // Ensure the effect runs correctly based on dependencies
 
   return (
     <div
@@ -126,13 +134,14 @@ const WinnerScreen: React.FC<WinPageProps> = ({ winner }) => {
           alt={winner.name}
           className="w-40 h-40 border-4 border-yellow-600 shadow-lg mb-6"
         />
-        <h2 className="text-yellow-400 text-4xl font-bold uppercase mt-4 animate-pulse">
+        <h2 className="text-yellow-400 text-4xl font-bold uppercase mt-4 animate-pulse  bg-gray-800 rounded-2xl p-4">
           {winner.name} Wins!
         </h2>
       </div>
 
       {/* Win Text */}
       <WinText />
+
 
       {/* Play Again Button */}
       <button

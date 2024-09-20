@@ -44,6 +44,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSrc, playOnStart, curren
         setIsPlaying(true); // Update state
         return;
       }
+      console.log({ isPlaying });
 
       if (isPlaying) {
         audioRef.current.pause(); // Pause the audio if it is currently playing
@@ -83,7 +84,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSrc, playOnStart, curren
     <div className="flex items-center space-x-4 mt-8"> {/* Flexbox container with space between items */}
       {/* Toggle Play/Pause button */}
       <button
-        onClick={() => handlePlay}
+        onClick={() => handlePlay()}
         className="px-6 py-3 bg-red-600 text-white font-bold text-xl rounded-lg hover:bg-red-800"
       >
         {isPlaying ? 'Pause' : 'Play'}

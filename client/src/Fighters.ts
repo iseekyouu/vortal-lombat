@@ -22,20 +22,23 @@ import Borodin from "./avatars/borodin.png";
 import Botov from "./avatars/botov.png";
 import Bushin from "./avatars/bushin.png";
 import Bahurinskiy from "./avatars/bahurinskiy.png";
+import uncleJenyaWinSound from './audio/wins/uncle_jenya.m4a'
+
 
 type FighterType = {
   name: string;
   avatar: string;
+  winSound?: string;
 } & Partial<Omit<Fighter, 'name' | 'avatar'>>;
 
 const fightersRaw: FighterType[]  = [
-  { avatar: Chekushkin, name: "uncle jenya", evasion: 99 },
+  { avatar: Chekushkin, name: "uncle jenya", evasion: 99, winSound: uncleJenyaWinSound },
   { avatar: Gabriel, name: "gabriel" },
   { avatar: Galashichev, name: "tra-ta-ta-ta-ta" },
-  { avatar: Jidkevich, name: "waterleha" },
+  { avatar: Jidkevich, name: "liquidman" },
   { avatar: Karbushev, name: "beast" },
   { avatar: Konkin, name: "andrew" },
-  { avatar: Orlov, name: "sokolov" },
+  { avatar: Orlov, name: "birdmen" },
   { avatar: Kuzakov, name: "bali boy" },
   { avatar: Novoselov, name: "mozeratty" },
   { avatar: Panov, name: "pawervova" },
@@ -59,6 +62,7 @@ export default fightersRaw.map(
     new Fighter(index, fighter.name, fighter.avatar, {
       evasion: fighter.evasion,
       health: fighter.health,
+      winSound: fighter.winSound,
     })
 );
 

@@ -1,3 +1,5 @@
+import defaultWinSound from './audio/wins/wins.m4a';
+
 class Fighter {
   public id: number;
   public name: string;
@@ -8,6 +10,7 @@ class Fighter {
   public defense: number;
   public critical: number;
   public evasion: number;
+  public winSound: string;
 
 
   constructor(id: number, name: string, avatar: string, {
@@ -17,6 +20,7 @@ class Fighter {
     defense = 0,
     critical = 5,
     evasion = 5,
+    winSound = defaultWinSound,
   } = {}) {
     this.id = id;
     this.avatar = avatar;
@@ -29,6 +33,7 @@ class Fighter {
     this.defense = defense;
     this.critical = critical;
     this.evasion = evasion;
+    this.winSound = winSound;
   }
 }
 
