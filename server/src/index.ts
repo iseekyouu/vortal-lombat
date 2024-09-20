@@ -86,10 +86,12 @@ const getKillingPrompt = (name1: string, name2: string, weapon: string) =>
 const getDyingPrompt = (name1: string, name2: string, weapon: string) =>
   `Опиши смешно используя 1 короткое предложение. Идет драка, человек по имени ${name1} атакует человека по имени ${name2} используя в качестве оружия ${weapon}, но промахивается`;
 
+// а вот тут у нас вся механика этой эбической баталии описана
 const performRound = async (player1: Player, player2: Player) => {
   let p1text;
   let p2text;
 
+  // ты ловкий штоле?
   const p2evaded = Math.random() * 100 < player2.evasion;
   let p1dmg = p2evaded
     ? 0
@@ -108,8 +110,20 @@ const performRound = async (player1: Player, player2: Player) => {
   } else {
     // тогда вычитаем урон из хп
     const p2health = player2.health - p1dmg;
-    // погиб и ходить не будет
+    // p2 погиб и ходить не будет
     if (p2health <= 0) {
+      // в статистику одному поражение, второму победу, главное не перепутать
+      await Ladder.findOneAndUpdate(
+        { fighter: player2.name },
+        { $inc: { loses: 1 } },
+        { upsert: true }
+      );
+      await Ladder.findOneAndUpdate(
+        { fighter: player1.name },
+        { $inc: { wins: 1 } },
+        { upsert: true }
+      );
+
       return {
         p1dmg,
         p2dmg: 0,
@@ -155,6 +169,18 @@ const performRound = async (player1: Player, player2: Player) => {
     const p1health = player1.health - p2dmg;
     // погиб, всё уже посчитано
     if (p1health <= 0) {
+      // ну как же так, Хабиб?
+      await Ladder.findOneAndUpdate(
+        { fighter: player1.name },
+        { $inc: { loses: 1 } },
+        { upsert: true }
+      );
+      await Ladder.findOneAndUpdate(
+        { fighter: player2.name },
+        { $inc: { wins: 1 } },
+        { upsert: true }
+      );
+
       return {
         p1dmg,
         p2dmg,
