@@ -23,7 +23,7 @@ const Ladder: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full p-8 bg-black text-yellow-400 rounded-lg shadow-lg min-h-[500px] max-h-[700px]">
+    <div className="w-full p-8 bg-black text-yellow-400 rounded-lg shadow-lg min-h-[500px]">
       <h1 className="text-5xl font-bold text-red-600 uppercase mb-8 animate-pulse text-center">
         Fighting Ladder
       </h1>

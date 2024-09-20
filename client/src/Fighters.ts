@@ -10,7 +10,7 @@ import Novoselov from "./avatars/novoselov.png";
 import Orlov from "./avatars/orlov.png";
 import Panov from "./avatars/panov.png";
 import Ponomarenko from "./avatars/ponomarenko.png";
-import Roshupkin from "./avatars/roshupkin.jpeg";
+import Roshupkin from "./avatars/roshupkin.png";
 import Seregin from "./avatars/seregin.png";
 import Siratov from "./avatars/siratov.png";
 import Surodina from "./avatars/surodina.png";
@@ -54,7 +54,7 @@ type FighterType = {
 } & Partial<Omit<Fighter, 'name' | 'avatar'>>;
 
 const fightersRaw: FighterType[]  = [
-  { avatar: Chekushkin, name: "uncle jenya", evasion: 99, winSound: uncleJenyaWinSound },
+  { avatar: Chekushkin, name: "uncle jenya", evasion: 9, winSound: uncleJenyaWinSound },
   { avatar: Gabriel, name: "gabriel", winSound: gabrialWinSound },
   { avatar: Galashichev, name: "tra-ta-ta-ta-ta", winSound: traTaTaTaWinSound },
   { avatar: Jidkevich, name: "liquidman", winSound: liquidmanWinSound },

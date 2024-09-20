@@ -10,6 +10,8 @@ import useAudio from './useAudio';
 import RoundAnnounce from './audio/round_announce.mp3';
 import EasterEggSound from './audio/easter_egg_1.mp3';
 import FinishHimSound from './audio/finish_fim.mp3';
+import HealthBar from './HealthBar';
+import FightTimer from './FightTimer';
 
 type ResponseFight = {
   p1dmg: string;
@@ -23,6 +25,7 @@ interface FightProps {
   player2: Fighter;
   onFightFinish: (winner: Fighter) => void;
   muted?: boolean;
+  fightReason: string;
 }
 
 // Player Sheet styled like MK3's player stats panel
@@ -62,7 +65,7 @@ const CombatLog: React.FC<{ rounds: ResponseFight[]; isLoading: boolean }> = ({
   // Auto scroll to the bottom when new messages are added
   useEffect(() => {
     if (logRef.current) {
-      logRef.current.scrollTop = logRef.current.scrollHeight + 200;
+      // logRef.current.scrollTop = logRef.current.scrollHeight + 200;
     }
   }, [rounds]);
 
@@ -158,12 +161,14 @@ const FinishHimButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   );
 };
 
+
 // Main Fight component styled like MK3
-const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted }) => {
+const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted, fightReason }) => {
   const [combatLog, setCombatLog] = React.useState<ResponseFight[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [fightFinished, setFightFinished] = React.useState(false);
-
+  const [player1MaxHealth] = React.useState(player1.health);
+  const [player2MaxHealth] = React.useState(player2.health);
 
   const { play: playHit1 } = useAudio(Hit1, muted);
   const { play: playHit2 } = useAudio(Hit2, muted);
@@ -181,6 +186,7 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted })
     { play: playHit4 },
     { play: playHit5 },
   ];
+
 
   const handleRound = useCallback(async () => {
     const hitIndex = Math.floor(Math.random() * hitSounds.length);
@@ -240,14 +246,29 @@ const Fight: React.FC<FightProps> = ({ player1, player2, onFightFinish, muted })
   return (
     <div className="flex flex-col items-center bg-black text-white min-h-screen">
       <h1 className="text-red-600 text-5xl font-bold uppercase mb-6 animate-pulse">
-        Fight between {player1.name} and {player2.name}
+        Бой между {player1.name} and {player2.name} {fightReason}
       </h1>
+
+      <div className="flex justify-between w-full max-w-6xl min-w-[98%] align-top">
+        {/* Health bar for Player 1 */}
+        <div className="flex-1">
+          <HealthBar health={player1.health} maxHealth={player1MaxHealth} name={player1.name} />
+        </div>
+
+        {/* Timer in the middle */}
+        <FightTimer />
+
+        {/* Health bar for Player 2 (reversed) */}
+        <div className="flex-1">
+          <HealthBar health={player2.health} maxHealth={player2MaxHealth} reversed name={player2.name}/>
+        </div>
+      </div>
+
       <div className="flex w-full justify-around items-start bg-zinc-900 p-6 rounded-lg">
         <PlayerSheet player={player1} />
         <div>
           <CombatLog rounds={combatLog} isLoading={isLoading} />
         </div>
-
         <PlayerSheet player={player2} />
       </div>
       <div className='mb-15'>{fightFinished && <FinishHimButton onClick={finishHim} />}</div>

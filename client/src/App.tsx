@@ -44,6 +44,7 @@ function App() {
   const [player2, setPlayer2] = React.useState<Fighter>(Fighters[1]);
   const [winner, setWinner] = React.useState<Fighter>(Fighters[0]);
   const [muted, setMuted] = React.useState(false);
+  const [fightReason, setFightReason] = React.useState('');
 
   function chooseFighter(fighter: Fighter) {
     setSelectedFighter(fighter);
@@ -90,7 +91,10 @@ function App() {
           <VersusScreen
             player1={selectedFighter}
             player2={player2}
-            onFightStart={() => setCurrentScreen(SCREENS.FIGHT)}
+            onFightStart={(reason) => {
+              setCurrentScreen(SCREENS.FIGHT)
+              setFightReason(reason);
+            }}
           />
         );
       case SCREENS.FIGHT:
@@ -100,6 +104,7 @@ function App() {
             player2={player2}
             onFightFinish={onFightFinish}
             muted={muted}
+            fightReason={fightReason}
           />
         );
       case SCREENS.WIN:

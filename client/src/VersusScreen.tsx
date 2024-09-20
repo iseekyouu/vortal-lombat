@@ -5,11 +5,31 @@ import VersusBackground from './backgrounds/versusbackground.jpg';
 interface FightLoadingScreenProps {
   player1: Fighter;
   player2: Fighter;
-  onFightStart: () => void;
+  onFightStart: (reason: string) => void;
 }
+
+const fightReasons = [
+  'за тяжелый мак',
+  'за ящик с лещами',
+  'за свободу',
+  'за последний кусочек пиццы с ананасом',
+  'чтобы доказать, у кого лучше усы',
+  'из-за медленного Wi-Fi',
+  'из-за ананасов на пицце',
+  'кто-то украл пульт от телевизора',
+  'чтобы выяснить, кто дольше задержит дыхание',
+  'не смогли выбрать сериал на Netflix',
+  'из-за спора, кто займет место у окна',
+  'чтобы выяснить, кто лучше изображает кошку',
+  'потому что один забыл сказать "будь здоров" после чихания',
+  'чеплаху горохового супа'
+]
 
 const VersusScreen: React.FC<FightLoadingScreenProps> = ({ player1, player2, onFightStart }) => {
   const [loadingComplete, setLoadingComplete] = useState(false);
+  const fightReasonIndex = Math.floor(Math.random() * fightReasons.length);
+  const [fightReason, setFightReason] = useState(fightReasons[fightReasonIndex]);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoadingComplete(true);
@@ -21,8 +41,8 @@ const VersusScreen: React.FC<FightLoadingScreenProps> = ({ player1, player2, onF
   useEffect(() => {
     if (loadingComplete) {
       const timer = setTimeout(() => {
-        onFightStart();
-      }, 1500);
+        onFightStart(fightReason);
+      }, 3000);
       return () => clearTimeout(timer); // Cleanup the timer on unmount
   }}, [loadingComplete]);
 
@@ -65,8 +85,10 @@ const VersusScreen: React.FC<FightLoadingScreenProps> = ({ player1, player2, onF
       <div className="flex justify-center items-center mt-12 ml-10">
         {!loadingComplete && (
           <div className="text-center">
-            <div className="text-5xl text-yellow-400 font-bold uppercase animate-bounce">FIGHT!</div>
-            <div className="mt-4 text-4xl text-red-600 animate-pulse">Loading...</div>
+            <div className="text-5xl text-yellow-400 font-bold uppercase animate-bounce">
+                Бой {fightReasons[fightReasonIndex]}
+            </div>
+            <div className="mt-4 text-4xl text-red-600 animate-pulse">загрузка...</div>
           </div>
         )}
       </div>
@@ -75,7 +97,7 @@ const VersusScreen: React.FC<FightLoadingScreenProps> = ({ player1, player2, onF
       <div className="flex justify-center items-center ml-10">
         {loadingComplete && (
           <div className="text-center">
-            <div className="text-7xl text-yellow-400 font-bold uppercase animate-pulse">Fight begins!</div>
+            <div className="text-7xl text-yellow-400 font-bold uppercase animate-pulse">Да начнется битва!</div>
           </div>
         )}
       </div>

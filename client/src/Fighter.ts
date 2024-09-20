@@ -15,21 +15,19 @@ class Fighter {
 
   constructor(id: number, name: string, avatar: string, {
     health = 100,
-    powerMin = 2,
-    powerMax = 10,
+    powerMin = 5,
+    powerMax = 20,
     defense = 0,
     critical = 5,
-    evasion = 5,
+    evasion = 15,
     winSound = defaultWinSound,
   } = {}) {
     this.id = id;
     this.avatar = avatar;
     this.name = name;
     this.health = health;
-    // this.powerMin = powerMin;
-    this.powerMin = 10;
-    // this.powerMax = powerMax;
-    this.powerMax = 90;
+    this.powerMin = powerMin;
+    this.powerMax = powerMax;
     this.defense = defense;
     this.critical = critical;
     this.evasion = evasion;
