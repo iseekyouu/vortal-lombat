@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 // Replace with your actual MongoDB URI
-const MONGO_URI = "mongodb://localhost:27017/vortal-lombat";
+const MONGO_URI = process.env.NODE_ENV === 'production' ? "mongodb://mongo:27017/vortal-lombat" : "mongodb://localhost:27017/vortal-lombat";
 
 export const connectDB = async () => {
   try {
