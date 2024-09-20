@@ -58,13 +58,13 @@ type FighterType = {
 
 const fightersRaw: FighterType[] = [
   { avatar: Chekushkin, name: "uncle jenya", evasion: 80, powerMax: 15, health: 50, winSound: uncleJenyaWinSound }, // Lower evasion, higher max power
-  { avatar: Gabriel, name: "gabriel", evasion: 16, powerMin: 7, winSound: gabrialWinSound }, // Slightly better evasion and powerMin
-  { avatar: Galashichev, name: "tra-ta-ta-ta-ta", powerMax: 25, powerMin: 30, evasion: 3, winSound: traTaTaTaWinSound }, // Higher powerMax, slightly less evasion
+  { avatar: Gabriel, name: "gabriel", evasion: 20, powerMin: 7, winSound: gabrialWinSound }, // Slightly better evasion and powerMin
+  { avatar: Galashichev, name: "tra-ta-ta-ta-ta", powerMax: 1, powerMin: 30, evasion: 3, winSound: traTaTaTaWinSound }, // Higher powerMax, slightly less evasion
   { avatar: Jidkevich, name: "liquidman", health: 90, evasion: 18, winSound: liquidmanWinSound }, // Lower health, better evasion
   { avatar: Karbushev, name: "beast", health: 120, evasion: 10, winSound: beastWinSound }, // Higher health, lower evasion (tougher but easier to hit)
   { avatar: Konkin, name: "andrew", evasion: 17, winSound: andrewWinSound }, // Balanced
   { avatar: Orlov, name: "birdmen", evasion: 19, health: 95, winSound: birdmanWinSound }, // Higher evasion, slightly lower health
-  { avatar: Kuzakov, name: "bali boy", powerMin: 6, evasion: 12, winSound: baliBoyWinSound }, // Balanced, slight tweak in powerMin
+  { avatar: Kuzakov, name: "bali boy", powerMin: 12, powerMax: 23, evasion: 22, winSound: baliBoyWinSound }, // Balanced, slight tweak in powerMin
   { avatar: Novoselov, name: "mozeratty", powerMax: 23, evasion: 14, winSound: mozerattyWinSound }, // Higher powerMax
   { avatar: Panov, name: "pawervova", health: 110, winSound: pawervovaWinSound }, // Slightly more health
   { avatar: Ponomarenko, name: "shao khivan", health: 1000, powerMin: 15, powerMax: 35, evasion: 99, winSound: shaoKhivanWinSound }, // Boss-level stats
