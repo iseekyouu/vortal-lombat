@@ -133,12 +133,7 @@ const port = 3092;
 app.use(express.json());
 app.use(cors());
 
-// A basic GET route
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello, Express with TypeScript!");
-});
-
-app.post("/fight", async (req: Request, res: Response) => {
+app.post("/api/fight", async (req: Request, res: Response) => {
   const { fighter1, fighter2 } = req.body;
 
   const player1 = fighter1;
@@ -155,7 +150,7 @@ app.post("/fight", async (req: Request, res: Response) => {
   res.json(round);
 });
 
-app.post("/chat", async (req, res) => {
+app.post("/api/chat", async (req, res) => {
   const { message } = req.body; // Get the user's message from the request body
 
   return res.json({ response: await askChatGPT(message) });
