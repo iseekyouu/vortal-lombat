@@ -47,8 +47,6 @@ const PlayerSheet: React.FC<{ player: Fighter }> = ({ player }) => {
       <p className="text-lg">
         Power: {player.powerMin} - {player.powerMax}
       </p>
-      <p className="text-lg">Defense: {player.defense}</p>
-      <p className="text-lg">Critical: {player.critical}</p>
       <p className="text-lg">Evasion: {player.evasion}</p>
     </div>
   );
