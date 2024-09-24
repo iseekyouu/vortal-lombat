@@ -6,5 +6,6 @@ export const SCREENS = {
   WIN: 3,
   DLC: 5,
   LADDER: 6,
+  TO_BE_CONTINUED: 7,
 }
 

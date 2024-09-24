@@ -12,6 +12,9 @@ import StartScreen from './StartScreen';
 import { SCREENS } from './constants';
 import DlcScreen from './DlcScreen';
 import Ladder from "./Ladder";
+import ToBeContinued from "./ToBeContinued";
+
+const TO_BE_CONTINUED_MODE = true;
 
 const MainLayout: React.FC<{
   children: React.ReactNode;
@@ -22,11 +25,11 @@ const MainLayout: React.FC<{
     <div className="App">
       <header className="App-header">
         <p>
-          <AudioPlayer
+          {TO_BE_CONTINUED_MODE && (<AudioPlayer
             audioSrc={MainTheme}
             playOnStart={!muted}
             currentScreen={currentScreen}
-          />
+          />)}
         </p>
         <div className="h-screen w-full">{children}</div>
       </header>
@@ -40,7 +43,7 @@ function App() {
     Fighters[0]
   );
   const [hideFighters, setHideFighters] = React.useState(false);
-  const [currentScreen, setCurrentScreen] = React.useState(SCREENS.START);
+  const [currentScreen, setCurrentScreen] = React.useState(TO_BE_CONTINUED_MODE ? SCREENS.TO_BE_CONTINUED : SCREENS.START);
   const [player2, setPlayer2] = React.useState<Fighter>(Fighters[1]);
   const [winner, setWinner] = React.useState<Fighter>(Fighters[0]);
   const [muted, setMuted] = React.useState(false);
@@ -74,6 +77,8 @@ function App() {
     }
 
     switch (currentScreen) {
+      case SCREENS.TO_BE_CONTINUED:
+        return <ToBeContinued />
       case SCREENS.START:
         return <StartScreen
           onStart={(muted: boolean = false) => {
