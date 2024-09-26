@@ -14,7 +14,7 @@ import DlcScreen from './DlcScreen';
 import Ladder from "./Ladder";
 import ToBeContinued from "./ToBeContinued";
 
-const TO_BE_CONTINUED_MODE = true;
+const TO_BE_CONTINUED_MODE = false;
 
 const MainLayout: React.FC<{
   children: React.ReactNode;
@@ -25,7 +25,7 @@ const MainLayout: React.FC<{
     <div className="App">
       <header className="App-header">
         <p>
-          {TO_BE_CONTINUED_MODE && (<AudioPlayer
+          {!TO_BE_CONTINUED_MODE && (<AudioPlayer
             audioSrc={MainTheme}
             playOnStart={!muted}
             currentScreen={currentScreen}
