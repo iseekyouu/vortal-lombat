@@ -13,7 +13,7 @@ const askChatGPT = async (message: string) => {
     const response = await axios.post(
       "https://api.openai.com/v1/chat/completions",
       {
-        model: "gpt-4o", // Use the desired model
+        model: "gpt-4o-mini", // Use the desired model
         messages: [{ role: "user", content: message }], // Send user's message to ChatGPT
       },
       {
